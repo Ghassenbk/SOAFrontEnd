@@ -1,0 +1,159 @@
+<app-dashheader>
+    <div>
+      <h3 class="mb-4">Formations</h3>
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h5 class="card-title m-0">Formations</h5>
+            <button
+              type="button"
+              class="btn btn-dark shadow-none btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#solution-s" (click)="resetNewFormation()">
+              <i class="bi bi-plus-square"></i> Add
+            </button>
+          </div>
+          <div class="table-responsive-md" style="height: 350px; overflow: scroll;">
+            <table class="table table-hover border">
+              <thead>
+                <tr class="bg-dark text-light">
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Date Debut</th>
+                  <th scope="col">Date fin</th>
+                  <th scope="col">prix</th>
+                  <th scope="col">Date</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="features-data">
+                <tr *ngFor="let formation of formations ; let i = index">
+                    <td>{{i+1}}</td>
+                    <td>{{formation.name}}</td>
+                    <td>{{formation.description}}</td>
+                    <td>{{formation.dateDebut | date: 'yyyy-MM-dd'}}</td>
+                    <td>{{formation.dateFin| date: 'yyyy-MM-dd'}}</td>
+                    <td>{{formation.prix}}</td>
+                    
+                    <td><a 
+                      class="btn btn-secondary" 
+                      (click)="editFormation(formation)" 
+                      data-bs-toggle="modal" 
+                      data-bs-target="#ModifySolution-s">
+                      <i class="bi bi-pencil-square"></i>
+                    </a>&nbsp;
+                      <a class="btn btn-danger"(click)="deleteFormation(formation.id)"><i class="bi bi-trash3"></i></a></td>          
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-dashheader>
+  
+
+    <!-- Solution Modal-->
+<div class="modal fade" id="solution-s" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form (ngSubmit)="addFormation()" #formationForm="ngForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Solution</h5>
+        </div>
+        <div class="modal-body">
+          <!-- Display error message -->
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input [(ngModel)]="newFormation.name" name="formation_name" type="text" class="form-control shadow-none" required #name="ngModel">
+            <div *ngIf="name.invalid && name.touched" class="text-danger">Name is required</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <input [(ngModel)]="newFormation.description" name="formation_description" type="text" class="form-control shadow-none" required #description="ngModel">
+            <div *ngIf="description.invalid && description.touched" class="text-danger">Description is required</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Price</label>
+            <input [(ngModel)]="newFormation.prix" name="formation_price" type="number" class="form-control shadow-none" required [min]="0.01" #prix="ngModel">
+            <div *ngIf="prix.invalid && prix.touched" class="text-danger">Price must be greater than 0</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Date Debut</label>
+            <input [(ngModel)]="newFormation.dateDebut" name="formation_dateDebut" type="date" class="form-control shadow-none" required [min]="0.01" #dateDebut="ngModel">
+            <div *ngIf="dateDebut.invalid && dateDebut.touched" class="text-danger">Price must be greater than 0</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Date Fin</label>
+            <input [(ngModel)]="newFormation.dateFin" name="formation_dateFin" type="date" class="form-control shadow-none" required [min]="0.01" #dateFin="ngModel">
+            <div *ngIf="dateFin.invalid && dateFin.touched" class="text-danger">Price must be greater than 0</div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger shadow-none" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-dark shadow-none" [disabled]="formationForm.invalid">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+    <!--Modifyy Solution Modal-->
+    <div class="modal fade" id="ModifySolution-s" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <form (ngSubmit)="updateFormation()" #formationForm="ngForm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modify Solution</h5>
+            </div>
+            <div class="modal-body">
+              <!-- Display error message -->
+              <div *ngIf="errorMessage" class="alert alert-danger">
+                {{ errorMessage }}
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input [(ngModel)]="newFormation.name" name="formation_name" type="text" class="form-control shadow-none" required #name="ngModel">
+                <div *ngIf="name.invalid && name.touched" class="text-danger">Name is required</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                <input [(ngModel)]="newFormation.description" name="formation_description" type="text" class="form-control shadow-none" required #description="ngModel">
+                <div *ngIf="description.invalid && description.touched" class="text-danger">Description is required</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Price</label>
+                <input [(ngModel)]="newFormation.prix" name="formation_price" type="number" class="form-control shadow-none" required [min]="0.01" #prix="ngModel">
+                <div *ngIf="prix.invalid && prix.touched" class="text-danger">Price must be greater than 0</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Date Debut</label>
+                <input [(ngModel)]="newFormation.dateDebut" name="formation_dateDebut" type="date" class="form-control shadow-none" required #dateDebut="ngModel">
+                <div *ngIf="dateDebut.invalid && dateDebut.touched" class="text-danger">Invalid date</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Date Fin</label>
+                <input [(ngModel)]="newFormation.dateFin" name="formation_dateFin" type="date" class="form-control shadow-none" required #dateFin="ngModel">
+                <div *ngIf="dateFin.invalid && dateFin.touched" class="text-danger">Invalid date</div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger shadow-none" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-dark shadow-none" [disabled]="formationForm.invalid">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+
+
+
+

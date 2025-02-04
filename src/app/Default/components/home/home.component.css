@@ -1,0 +1,153 @@
+.body {
+    background-color: #f8f9fa; /* Light background for better contrast */
+    background: linear-gradient(55deg, #9179de 0%, #d187e4 40%, #b4c8f4 60%, #4969c9 85%);
+}
+
+.section {
+    color: white;
+    padding: 40px 20px;
+}
+
+.floating-card {
+    background-color: white;
+    color: black;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+    margin-top: -50px; /* Make cards "float" above the section */
+    transition: transform 0.3s, box-shadow 0.3s;
+    
+}
+
+.floating-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.btn-green {
+    background-color:#898E90 ;
+    color: white;
+    border: none;
+    width:500px;
+    
+}
+
+.btn-green:hover {
+    background-color: #515455 ;
+    color: white;
+    border: none;
+    width:500px;
+}
+
+.services-section {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .services-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .service-card {
+    background-color: #fff;
+    color: #000;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(30% - 20px);
+    max-width: 400px;
+    margin-right: 35px;
+  }
+  
+  .service-card h3 {
+    font-size: 1.9rem;
+    margin-bottom: 10px;
+  }
+  
+  .service-card hr {
+    width: 50px;
+    border: 2px solid #000;
+    margin: 10px auto;
+  }
+  
+  .service-card p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+  
+  .contact-button {
+    margin-top: 20px;
+  }
+  
+  .contact-button a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #898E90;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+  
+  .contact-button a:hover {
+    background-color: #515455 ;
+  }
+
+
+
+
+
+
+
+  .about-section {
+    padding: 40px 20px;
+    max-width: 1800px;
+    margin: 0 auto;
+    font-size: larger;
+    font-weight:500;
+    color: #1a1919;;
+  }
+  
+  .highlight-title {
+    color: gray;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  
+  .main-title {
+    color: #000;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .section-subtitle {
+    color: #000;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: 15px;
+  }
+  
+  .benefits-list {
+    color: #1a1919;
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+  
+  .benefits-list li {
+    color: #1a1919;
+    margin-bottom: 10px;
+  }

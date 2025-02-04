@@ -1,0 +1,142 @@
+
+<div class="body">
+
+<app-header></app-header>
+<div class="my-5 px-4">
+    <h2 CLASS="fw-bold   text-center">CONTACTEZ NOUS</h2>
+    <div class="h-line bg-dark "></div>
+    <p class="text-center mt-3 ">
+
+
+      N'hésitez pas à nous contacter si vous avez des questions ou besoin d'assistance.<br>
+      Nous sommes là pour vous aider et veiller à ce que votre expérience soit fluide. N'hésitez pas à signaler tout problème !
+
+    </p>
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 mb-5 px-4">
+            <div class="bg-white rounded shadow p-4 " >
+                <iframe class="w-100 rounded mb-4" height="320px"   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d474.6663375258736!2d10.239818916942344!3d36.83860149379118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12fd356ed2752363%3A0xbfa95ad24ab78aa3!2sOutlet%20STORE!5e0!3m2!1sen!2stn!4v1736373946293!5m2!1sen!2stn" loading="lazy"></iframe>
+                <h5>Addresse</h5>
+                <a href="" target="_blank" class="d-inline-block text-decoration-none text-dark mb-2">
+                    <i class="bi bi-geo-alt-fill"></i>
+                </a>
+
+                <h5 class="mt-4" >Appelez nous</h5>
+                <a href="tel:+" class="d-inline-block mb-2 text-decoration-none text-dark">
+                    <i class="bi bi-telephone-fill"></i> + 
+                </a><br>
+                
+
+                <h5 class="mt-4">Email</h5>
+                <a href="mailto:" class="d-inline-block  text-decoration-none text-dark"><i class="bi bi-envelope-fill"></i>
+                    </a>
+
+                <h5 class="mt-4">Suivez-nous</h5>
+                
+
+                <a href=" " class="d-inline-block mb-3 text-dark fs-5 me-2">
+                    <i class="bi bi-facebook me-1"></i>
+                </a>
+                <a href=" " class="d-inline-block mb-3 text-dark fs-5 me-2">
+                    <i class="bi bi-instagram me-1"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6  px-4">
+            <div class="bg-white rounded shadow p-4 " >
+                <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+                    <div class="mb-3">
+                      <label class="form-label">Nom</label>
+                      <input
+                        type="text"
+                        formControlName="name"
+                        class="form-control shadow-none"
+                        required
+                      />
+                      <div *ngIf="contactForm.get('name')?.touched && contactForm.get('name')?.invalid" class="text-danger">
+                        Nom est obligatoire.
+                      </div>
+                    </div>
+                  
+                    <div class="mb-3">
+                      <label class="form-label">Email</label>
+                      <input
+                        type="email"
+                        formControlName="email"
+                        class="form-control shadow-none"
+                        required
+                      />
+                      <div *ngIf="contactForm.get('email')?.touched && contactForm.get('email')?.invalid" class="text-danger">
+                        <div *ngIf="contactForm.get('email')?.errors?.['required']">Email est obligatoire.</div>
+                        <div *ngIf="contactForm.get('email')?.errors?.['email']">Entrez une adresse email valide.</div>
+                      </div>
+                    </div>
+                  
+                    <div class="mb-3">
+                      <label class="form-label">Objet</label>
+                      <input
+                        type="text"
+                        formControlName="subject"
+                        class="form-control shadow-none"
+                      />
+                    </div>
+                  
+                    <div class="mb-3">
+                      <label class="form-label">Message</label>
+                      <textarea
+                        formControlName="message"
+                        class="form-control shadow-none"
+                        rows="4"
+                        required
+                      ></textarea>
+                      <div *ngIf="contactForm.get('message')?.touched && contactForm.get('message')?.invalid" class="text-danger">
+                        Veuillez entrer votre message.
+                      </div>
+                    </div>
+                  
+                    <button type="submit" class="btn btn-primary" [disabled]="contactForm.invalid">Envoyer</button>
+                  </form>
+                  
+                    <div *ngIf="successMessage" class="alert alert-success mt-3">
+                        {{ successMessage }}
+                      </div>
+                
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

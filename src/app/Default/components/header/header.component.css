@@ -1,0 +1,61 @@
+nav{
+    background: #d7d5d5;
+    box-shadow: 0 4px 8px rgba(170, 163, 163, 0.5); /* Adjust the values as needed */
+    z-index: 1000; /* Ensure the nav stays on top */
+}
+
+
+  /* Style the dropdown button to make it circular */
+.btn-circle {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    background-color: gray;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .btn-circle:hover {
+    background-color: rgb(135, 48, 135);
+  }
+  
+  .user-initials {
+    display: block;
+    text-transform: uppercase;
+    font-size: 16px;
+  }
+/* Update the dropdown menu to make it wider */
+/* Make dropdown menu wider */
+.dropdown-menu {
+    position: absolute;
+    z-index: 1050;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%); /* Centers the dropdown horizontally */
+    min-width: 200px;  /* You can adjust this value */
+    width: auto;  /* This will make it adjust based on the content */
+    padding: 10px;
+    margin-left: 20px;  /* Adds space from the left edge of the screen */
+    margin-right: 20px; 
+    max-width: 350px; /* Adjust based on your preference */
+    /* Optional: Add some internal padding for better spacing */
+  }
+  
+
+  
+  .user-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+
+  

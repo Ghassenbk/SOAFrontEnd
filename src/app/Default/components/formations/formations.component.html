@@ -1,0 +1,34 @@
+<div class="body">
+    <app-header></app-header>
+    <div class="mb-3">
+        <br>
+    </div>
+    
+    <div class="formations-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
+                    <th>Prix</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor=" let formation of formations; let i=index  " >
+                    <td>{{i+1}}</td>
+                    <td>{{formation.name}}</td>
+                    <td>{{formation.description}}</td>
+                    <td>{{formation.dateDebut | date}}</td>
+                    <td>{{formation.dateFin | date }}</td>
+                    <td>{{formation.prix}}.DT</td>
+                    <td><button class="btn-register" (click)="enrollInFormation(formation.id)">S'inscrire</button></td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </div>
+</div>

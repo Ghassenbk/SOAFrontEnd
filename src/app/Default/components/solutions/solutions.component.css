@@ -1,0 +1,9 @@
+.body {
+    background-color: #f8f9fa; /* Light background for better contrast */
+    background: linear-gradient(55deg, #9179de 0%, #d187e4 40%, #b4c8f4 60%, #4969c9 85%);
+    align-items: center;
+}
+.container {
+    margin-top: 100px;
+}
+

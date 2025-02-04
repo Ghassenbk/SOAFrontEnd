@@ -1,0 +1,50 @@
+<app-dashheader>
+    <div>
+      <div class="text-end mb-4">
+        <a  (click)="markAllAsRead()" class="btn btn-dark rounded-pill shadow-none">
+            <i class="bi bi-check-all"></i> Mark all read
+          </a>
+        <a
+                href="javascript:void(0)"
+                class="btn btn-danger rounded-pill shadow-none"
+                (click)="deleteAllAvis()"
+        >
+            <i class="bi bi-trash"></i> Delete all
+        </a>
+      </div>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 5%;">#</th>
+            <th scope="col" style="width: 15%;">Name</th>
+            <th scope="col" style="width: 20%;">Email</th>
+            <th scope="col" style="width: 20%;">Subject</th>
+            <th scope="col" style="width: 25%;">Message</th>
+            <th scope="col" style="width: 15%;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let av of avis ; let i = index">
+            <th scope="row">{{i+1}}</th>
+            <td>{{av.name}}</td>
+            <td>{{av.email}}</td>
+            <td>{{av.subject}}</td>
+            <td>{{av.message}}</td>
+            <td class="action-cell">
+                <a
+                  class="btn"
+                  [class.btn-success]="av.status === 1"
+                  [class.btn-primary]="av.status !== 1"
+                  (click)="markAsRead(av.id)"
+                >
+                  {{ av.status === 1 ? 'Seen' : 'Mark as read' }}
+                </a>
+                &nbsp;
+                <a class="btn btn-danger" (click)="deleteAvis(av.id)">Delete</a>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </app-dashheader>
+  

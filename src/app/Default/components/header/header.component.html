@@ -1,0 +1,187 @@
+
+<nav class="navbar navbar-expand-lg navbar-light  py-1">
+    <div class="container-fluid">
+      <!-- Brand on the left -->
+      <a class="navbar-brand fs-1" routerLink="/">Computer Soft Service </a>
+  
+      <!-- Toggler for smaller screens -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <!-- Menu on the right -->
+        <div class="collapse navbar-collapse me-5" id="navbarNavDropdown">
+          <ul class="navbar-nav ms-auto me-5"> <!-- Adjust margin to move menu left -->
+            <li class="nav-item mx-2">
+              <a class="nav-link active fs-5" aria-current="page" routerLink="/">Accueil</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link active fs-5" aria-current="page" routerLink="/solutions">Nos Solutions</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link active fs-5" aria-current="page" routerLink="/formations">Nos Formations</a>
+            </li>
+            
+
+
+
+            <li *ngIf="currentUser && currentUser.role === 'ADMIN'" >
+              <a class="nav-link active fs-5" aria-current="page" routerLink="/admin_solution">&nbsp;<i class="bi bi-gear-fill"></i></a>
+            </li>
+
+
+
+            <li class="nav-item mx-2" *ngIf="currentUser  ||currentUser==null">
+              <a class="nav-link active fs-5" aria-current="page" routerLink="/contact">Contacter Nous</a>
+            </li>
+            <li class="nav-item mx-2" *ngIf="currentUser && currentUser.role === 'CLIENT'">
+              <a class="nav-link active fs-5" aria-current="page" routerLink="/paiement"><i class="bi bi-cart-fill"></i>Panier</a>
+          </li>
+
+
+          </ul>
+          <div class="d-flex">
+            <div class="d-flex">
+
+              <button *ngIf="!currentUser" type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#loginModal">
+                Login
+              </button>&nbsp;&nbsp;
+            </div>
+
+            <button *ngIf="!currentUser" type="button" class="btn btn-outline-dark shadow-none "  data-bs-toggle="modal" data-bs-target="#registerModal">
+                Register
+            </button>
+            <div *ngIf="currentUser" ngbDropdown class="dropdown">
+              <button ngbDropdownToggle class="btn btn-circle" aria-expanded="false">
+                <span class="user-initials">{{ currentUser.name | slice:0:1 }}</span>
+              </button>
+              <ul ngbDropdownMenu class="dropdown-menu" [ngStyle]="{'position': 'absolute', 'z-index': '1050', 'top': '100%', 'left': '50%', 'transform': 'translateX(-50%)', 'width': 'auto'}">
+                <li><span class="user-name">Welcome, {{ currentUser.name }}!</span>
+                </li>
+                <li *ngIf="currentUser && currentUser.role === 'CLIENT'"><a ngbDropdownItem routerLink="/user_formations">Mes Formations</a></li>
+                <li *ngIf="currentUser && currentUser.role === 'CLIENT'"><a ngbDropdownItem routerLink="/user_settings">Parametre&nbsp;&nbsp;&nbsp;<i class="bi bi-gear-fill"></i></a></li>
+
+                <li><button class="btn btn-outline-danger" ngbDropdownItem (click)="logout()">Logout</button></li>
+              </ul>
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            
+            
+            
+            
+            
+        </div>
+
+
+        </div>
+    </div>
+
+  </nav>
+
+
+  <!-- Login Modal -->
+  <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <form (ngSubmit)="login()">
+            <div class="modal-header">
+              <h5 class="modal-title d-flex align-items-center">
+                <i class="bi bi-person-circle fs-3 me-2"></i> User Login
+              </h5>
+              <button type="reset" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <!-- Email Input -->
+              <div class="mb-3">
+                <label class="form-label">Adresse Email</label>
+                <input type="email" [(ngModel)]="loginData.email" name="email" class="form-control shadow-none" required #email="ngModel">
+              </div>
+              
+              <!-- Password Input -->
+              <div class="mb-4">
+                <label class="form-label">Mot de passe</label>
+                <input type="password" [(ngModel)]="loginData.password" name="password" class="form-control shadow-none" required #password="ngModel">
+              </div>
+              
+              <!-- Submit Button & Forgot Password -->
+              <div class="d-flex align-items-center justify-content-between">
+                <button type="submit" class="btn btn-dark shadow-none">LOGIN</button>
+                <a href="#" class="text-secondary text-decoration-none">Forgot Password?</a>
+              </div>
+            </div>
+          </form>
+          
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+        <div class="modal-header">
+          <h5 class="modal-title d-flex align-items-center">
+            <i class="bi bi-person-lines-fill fs-3 me-2"></i> User Registration
+          </h5>
+          <button type="reset" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
+            Note: Your details must match your ID (CIN, Passport, Driving License, etc.) that will be required during check-in.
+          </span>
+
+          <!-- Message Display -->
+          <div *ngIf="message" [ngClass]="{'alert': true, 'alert-success': messageType === 'success', 'alert-danger': messageType === 'error'}" class="mb-3">
+            {{ message }}
+          </div>
+
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-6 ps-0 mb-3">
+                <label class="form-label">Name</label>
+                <input name="name" type="text" class="form-control shadow-none" [(ngModel)]="user.name" required #name="ngModel">
+                <div *ngIf="name.invalid && name.touched" class="text-danger">Name is required</div>
+              </div>
+              <div class="col-md-6 p-0 mb-3">
+                <label class="form-label">Email address</label>
+                <input name="email" type="email" class="form-control shadow-none" [(ngModel)]="user.email" required email #email="ngModel">
+                <div *ngIf="email.invalid && email.touched" class="text-danger">Valid email is required</div>
+              </div>
+              <div class="col-md-6 ps-0 mb-3">
+                <label class="form-label">Phone Number</label>
+                <input name="phone" type="number" class="form-control shadow-none" [(ngModel)]="user.phone" required #phone="ngModel">
+                <div *ngIf="phone.invalid && phone.touched" class="text-danger">Phone number is required</div>
+              </div>
+              <div class="col-md-12 p-0 mb-3">
+                <label class="form-label">Address</label>
+                <input name="adresse" type="text" class="form-control shadow-none" rows="1" [(ngModel)]="user.adresse" required #adresse="ngModel">
+                <div *ngIf="adresse.invalid && adresse.touched" class="text-danger">Address is required</div>
+              </div>
+              
+              <div class="col-md-6 ps-0 mb-3">
+                <label class="form-label">Password</label>
+                <input name="pass" type="password" class="form-control shadow-none" [(ngModel)]="user.password" required minlength="6" #password="ngModel">
+                <div *ngIf="password.invalid && password.touched" class="text-danger">Password is required (minimum 6 characters)</div>
+              </div>
+              <div class="col-md-6 p-0 mb-3">
+                <label class="form-label">Confirm Password</label>
+                <input name="cpass" type="password" class="form-control shadow-none" [(ngModel)]="user.confirmPassword" required [pattern]="user.password" #confirmPassword="ngModel">
+                <div *ngIf="confirmPassword.invalid && confirmPassword.touched" class="text-danger">Passwords must match</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center my-1">
+            <button type="submit" class="btn btn-dark shadow-none" [disabled]="registerForm.invalid">REGISTER</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+  
+
+
+  

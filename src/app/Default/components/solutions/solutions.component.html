@@ -1,0 +1,29 @@
+
+<div class="body">
+  <app-header></app-header>
+    <div class="container">
+
+      <div class="container mt-3 mb-5">
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
+          <button class="btn btn-secondary" type="submit">Rechercher</button>
+        </form>
+      </div>
+        <div>
+        <div class="row">
+          <div *ngFor="let solution of solutions" class="col mb-4">
+            <div  class="card" style="width: 18rem; ">
+                <img [src]="solution.image" class="card-img-top" alt="image de la soultion">
+                <div class="card-body">
+                  <h5 class="card-title">{{solution.name}}</h5>
+                  <p class="card-text">{{ solution.description }}</p>
+                  <p>{{solution.prix}}.DT</p>
+                  <button class="btn btn-secondary" (click)="addToCart(solution.id)">Ajouter Au panier</button>
+                </div>
+              </div>
+          </div>
+        </div>
+        </div>
+         
+      </div>
+</div>

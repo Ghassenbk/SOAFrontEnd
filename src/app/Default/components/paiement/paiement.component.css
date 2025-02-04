@@ -1,0 +1,30 @@
+.body {
+    background-color: #f8f9fa; /* Light background for better contrast */
+    background: linear-gradient(55deg, #9179de 0%, #d187e4 40%, #b4c8f4 60%, #4969c9 85%);
+}
+.cart-container {
+    position: relative;
+  }
+  
+  .list-group-item {
+    position: relative;
+    padding-right: 50px; /* Space for the button */
+  }
+  
+  .remove-btn {
+    position: absolute;
+    right: -40px; /* Move the button outside the box */
+    top: 50%;
+    transform: translateY(-50%); /* Center vertically */
+    border: none;
+    background-color: transparent;
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .remove-btn:hover {
+    color: darkred;
+  }
+  

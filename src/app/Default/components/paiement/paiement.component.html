@@ -1,0 +1,139 @@
+<div class="body">
+    <app-header></app-header>  
+    <div class="container">
+      <main>
+        <div class="py-5 text-center">
+          <h2>Formulaire de paiement</h2>
+          <p class="lead">Merci pour votre confiance ! Veuillez vérifier les détails de votre commande avant de confirmer votre paiement.</p>
+        </div>
+    
+        <!--panier-->
+        <div class="row g-5">
+          <div class="col-md-5 col-lg-4 order-md-last">
+            <div class="cart-container">
+              <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-primary">Votre Panier</span>
+                <span class="badge bg-primary rounded-pill">{{ cartItems.length }}</span>
+              </h4>
+            
+              <ul class="list-group mb-3 position-relative">
+                <li *ngFor="let item of cartItems" class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="my-0">{{ item.name }}</h6>
+                    <small class="text-muted">{{ item.description }}</small>
+                  </div>
+                  <span class="text-muted">{{ item.prix }} DT</span>
+            
+                  <!-- Remove Button Outside the Box -->
+                  <button (click)="removeFromCart(item.id)" class="btn btn-outline-danger btn-sm remove-btn ">
+                    ✖
+                  </button>
+                </li>
+            
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Total (DT)</span>
+                  <strong>{{ totalPrice }} DT</strong>
+                </li>
+              </ul>
+            </div>
+            
+            
+            
+            
+          </div>
+          <div class="col-md-7 col-lg-8">
+            <form  #paymentForm="ngForm" class="needs-validation" novalidate>
+              <div class="row g-3">
+
+
+
+
+    
+             
+                </div>
+    
+    
+              <hr class="my-4">
+    
+              <h4 class="mb-3">paiement</h4>
+    
+              <div class="my-3">
+                <div class="form-check">
+                  <input id="credit" name="paymentMethod" type="radio" class="form-check-input" value="Visa" required>
+                  <label class="form-check-label" for="credit">Visa</label>
+                </div>
+                <div class="form-check">
+                  <input id="debit" name="paymentMethod" type="radio" class="form-check-input" value="MasterCard" required>
+                  <label class="form-check-label" for="debit">MasterCard</label>
+                </div>
+                <div class="form-check">
+                  <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" value="PayPal" required>
+                  <label class="form-check-label" for="paypal">PayPal</label>
+                </div>
+              </div>
+              
+    
+              <div class="row gy-3">
+                <!-- Name on Card -->
+                <div class="col-md-6">
+                  <label for="cc-name" class="form-label">Nom sur la carte</label>
+                  <input type="text" class="form-control" id="cc-name" name="ccName" [(ngModel)]="ccName" required #ccNameInput="ngModel">
+                  <small class="text-muted">Nom complet tel qu'il apparaît sur la carte</small>
+                  <div class="invalid-feedback" *ngIf="ccNameInput.invalid && ccNameInput.touched">
+                    <small class="text-danger">Le nom sur la carte est obligatoire</small>
+                  </div>
+                </div>
+              
+                <!-- Credit Card Number -->
+                <div class="col-md-6">
+                  <label for="cc-number" class="form-label">Numéro de Carte de Crédit</label>
+                  <input type="number" class="form-control" id="cc-number" name="ccNumber" [(ngModel)]="ccNumber" required pattern="^[0-9]+$" #ccNumberInput="ngModel">
+                  <div class="invalid-feedback" *ngIf="ccNumberInput.invalid && ccNumberInput.touched">
+                    <small class="text-danger">Le numéro de carte de crédit est obligatoire</small>
+                  </div>
+                </div>
+              
+                <!-- Expiration Date -->
+                <div class="col-md-3">
+                  <label for="cc-expiration" class="form-label">Expiration</label>
+                  <input type="date" class="form-control" id="cc-expiration" name="ccExpiration" [(ngModel)]="ccExpiration" required #ccExpirationInput="ngModel">
+                  <div class="invalid-feedback" *ngIf="ccExpirationInput.invalid && ccExpirationInput.touched">
+                    <small class="text-danger">Date d'expiration requise</small>
+                  </div>
+                </div>
+              
+                <!-- CVV -->
+                <div class="col-md-3">
+                  <label for="cc-cvv" class="form-label">CVV</label>
+                  <input type="number" class="form-control" id="cc-cvv" name="ccCvv" [(ngModel)]="ccCvv" required #ccCvvInput="ngModel">
+                  <div class="invalid-feedback" *ngIf="ccCvvInput.invalid && ccCvvInput.touched">
+                    <small class="text-danger">Code de sécurité requis</small>
+                  </div>
+                </div>
+              </div>
+              
+              <hr class="my-4">
+              
+              <!-- Payment Button -->
+              <button  (click)="processPayment()" class="w-100 btn btn-primary btn-lg" type="button" [disabled]="ccNameInput.invalid || ccNumberInput.invalid || ccExpirationInput.invalid || ccCvvInput.invalid">
+                Confirmer le paiement
+              </button>
+              
+              
+            </form>
+          </div>
+        </div>
+      </main>
+    
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2001–2025 Computer Soft Service</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Privacy</a></li>
+          <li class="list-inline-item"><a href="#">Terms</a></li>
+          <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+      </footer>
+    </div>
+    <script src="form-validation.js"></script>
+   
+</div>
