@@ -1,21 +1,21 @@
-/* Style for the images inside the table */
+
 table img {
-    width: 110px; /* Set the width of the image */
-    height: auto; /* Maintain aspect ratio */
-    object-fit: contain; /* Ensure the image fits nicely */
-    border-radius: 5px; /* Optional: Rounded corners for the image */
-    display: block; /* Ensure proper alignment within the table cell */
-    margin: 0 auto; /* Center the image horizontally in the cell */
+    width: 110px; 
+    height: auto; 
+    object-fit: contain; 
+    border-radius: 5px; 
+    display: block; 
+    margin: 0 auto; 
   }
   
-  /* Ensure the header and cells are vertically aligned */
+ 
   table th,
   table td {
-    text-align: center; /* Center-align all content */
-    vertical-align: middle; /* Vertically align content in the middle */
+    text-align: center; 
+    vertical-align: middle; 
   }
   
-  /* Optional: Add padding for better spacing */
+
   table td {
     padding: 10px;
   }

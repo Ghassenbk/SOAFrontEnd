@@ -1,17 +1,14 @@
-/* Ensure the table layout is consistent */
 table.table {
     table-layout: fixed;
     width: 100%;
   }
-  
-  /* Align the buttons to the left */
   .action-cell {
-    text-align: left; /* Align content to the left */
-    width: 100%; /* Occupy maximum width */
+    text-align: left; 
+    width: 100%; 
   }
   
-  /* Optional: Style the buttons for better appearance */
+  
   .action-cell .btn {
-    margin-right: 5px; /* Add spacing between buttons */
+    margin-right: 5px; 
   }
   

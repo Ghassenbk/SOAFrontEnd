@@ -16,11 +16,12 @@ export class AdminPaiementsComponent implements OnInit{
 
   ngOnInit(): void {
     this.paiementService.getPaiements().subscribe((data) => {
+      console.log(data); // Log the response data
       this.paiements = data;
       this.calculateTotalPayed();
-    })
-    ;
+    });
   }
+  
   calculateTotalPayed(): void {
     this.total= this.paiements.reduce((sum, paiement) => sum + paiement.totalPayed, 0);
   }

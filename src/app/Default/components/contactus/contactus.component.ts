@@ -1,6 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { ContactService } from '../../services/conactservice/contact.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CompanyService } from '../../../Default/services/companyinfo/company.service';
 
 @Component({
   selector: 'app-contactus',
@@ -12,9 +13,21 @@ export class ContactusComponent implements OnInit {
 
   contactForm!: FormGroup;
   successMessage: string | null = null; 
-  
+  companyInfo: any = {
+    name: '',
+    address: '',
+    gmaps: '',
+    phone: '',
+    email: '',
+    facebookurl: '',
+    instagramurl: '',
+    twitterurl: '',
+    iframe: ''
+  };
+  companyId: number = 2; // You can set this dynamically based on your requirement
 
-  constructor(private fb: FormBuilder, private contactService: ContactService) {}
+
+  constructor(private fb: FormBuilder, private contactService: ContactService,private companyService: CompanyService) {}
 
   ngOnInit(): void {
     this.contactForm = this.fb.group({
@@ -23,6 +36,10 @@ export class ContactusComponent implements OnInit {
       subject: [''],
       message: ['', [Validators.required]],
     });
+    this.companyService.getCompanyInfo(this.companyId).subscribe((data: any[]) => {
+      this.companyInfo = data;
+    });
+
   }
 
   onSubmit(): void {

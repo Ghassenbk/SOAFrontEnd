@@ -10,12 +10,14 @@ import { SolutionService } from '../../../Default/services/solutionservices/solu
 export class AdminSolutionsComponent implements OnInit {
   solutions: any[] = [];
   newSolution = {
+    id: 0, // Ajout de l'id
     name: '',
     description: '',
     prix: 0,
     image: '',
     devis: ''
   };
+  
   errorMessage: string = ''; // Error message for duplicate names
 
   constructor(private solutionService: SolutionService) {}
@@ -40,6 +42,7 @@ export class AdminSolutionsComponent implements OnInit {
   }
   resetNewSolution(): void {
     this.newSolution = {
+      id: 0, // Ajout de l'id
       name: '',
       description: '',
       prix: 0,
@@ -48,101 +51,109 @@ export class AdminSolutionsComponent implements OnInit {
     };
   }
 
+  selectedFile: File | null = null;
+  selectedPdfFile: File | null = null;
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.newSolution.image = e.target.result; // Show the image preview instantly
+        
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  onPdfFileSelected(event: any) {
+    this.selectedPdfFile = event.target.files[0];
+  }
+
+
+  
+
   addSolution(): void {
-    this.errorMessage = ''; // Clear previous error message
-  
-    this.solutionService.addSolution(this.newSolution).subscribe(
-      (data) => {
-        this.newSolution = { name: '', description: '', prix: 0, image: '', devis: '' };
-  
-        // Close the modal manually only on success
-        const modal = document.getElementById('solution-s');
-        if (modal) {
-          modal.style.display = 'none';
-          modal.classList.remove('show');
-          document.body.classList.remove('modal-open');
-          const backdrop = document.querySelector('.modal-backdrop');
-          if (backdrop) {
-            backdrop.remove();
-          }
-        }
-  
-        // Reload the page to fetch updated data
-        location.reload();
-      },
-      (error) => {
-        if (error.status === 400) {
-          this.errorMessage = 'Solution already exists';
-  
-          // Clear the error message after 5 seconds
-          setTimeout(() => {
-            this.errorMessage = '';
-          }, 5000);
-  
-          console.error('Error response:', error); // Show backend error message
-        } else {
-          console.error('Unexpected error:', error);
-        }
-      }
-    );
-  }
-
-
-  editSolution(formation: any): void {
-    this.newSolution = { ...formation }; // Clone the clicked solution's data
-  }
-
-  updateSolution(): void {
     this.errorMessage = '';
   
-    this.solutionService.updateSolution(this.newSolution).subscribe(
-      () => {
-        this.newSolution = {
-          name: '',
-          description: '',
-          prix: 0,
-          image: '',
-          devis: ''
-        };
+    if (!this.selectedFile || !this.selectedPdfFile) {
+      this.errorMessage = 'Please select both an image file and a PDF file.';
+      return;
+    }
   
-        // Close the modal
-        const modal = document.getElementById('ModifySolution-s');
-        if (modal) {
-          modal.style.display = 'none';
-          modal.classList.remove('show');
-          document.body.classList.remove('modal-open');
-          const backdrop = document.querySelector('.modal-backdrop');
-          if (backdrop) {
-            backdrop.remove();
-          }
-        }
+    const formData = new FormData();
+    formData.append('image', this.selectedFile);
+    formData.append('name', this.newSolution.name);
+    formData.append('description', this.newSolution.description);
+    formData.append('prix', this.newSolution.prix.toString());
+    formData.append('devis', this.selectedPdfFile, this.selectedPdfFile.name);
   
-        // Refresh the list
-        this.solutionService.getSolutions().subscribe((data: any[]) => {
-          this.solutions = data;
-        });
-  
-        // Reload the page to fetch updated data
+    this.solutionService.addSolution(formData).subscribe(
+      (data) => {
+        this.resetNewSolution();
         location.reload();
       },
       (error) => {
-        if (error.status === 400) {
-          this.errorMessage = 'Solution name already exists.';
-        } else if (error.status === 404) {
-          this.errorMessage = 'Solution not found.';
-        } else if (error.status === 500) {
-          this.errorMessage = 'An error has occured .';
-        } else {
-          console.error('Unexpected error:', error);
-        }
-  
-        // Clear the error message after 5 seconds
-        setTimeout(() => {
-          this.errorMessage = '';
-        }, 5000);
+        this.errorMessage = 'An error occurred.';
+        console.error(error);
       }
     );
   }
+
+
+
+
+editSolution(solution: any): void {
+  this.newSolution = { ...solution }; // Copie l'objet complet avec l'ID
+}
+
+
+updateSolution(): void {
+  this.errorMessage = '';
+
+  const formData = new FormData();
+
+  if (this.selectedFile) {
+    formData.append('image', this.selectedFile);
+  }
+
+  if (this.selectedPdfFile) {
+    formData.append('devis', this.selectedPdfFile, this.selectedPdfFile.name);
+  }
+
+  if (this.newSolution.name) {
+    formData.append('name', this.newSolution.name);
+  }
+
+  if (this.newSolution.description) {
+    formData.append('description', this.newSolution.description);
+  }
+
+  if (this.newSolution.prix !== undefined && this.newSolution.prix !== null) {
+    formData.append('prix', this.newSolution.prix.toString());
+  }
+
+  this.solutionService.updateSolution(formData, this.newSolution.id).subscribe(
+    () => {
+      this.resetNewSolution();
+      location.reload();
+    },
+    (error) => {
+      if (error.status === 400) {
+        this.errorMessage = 'Solution name already exists.';
+      } else if (error.status === 404) {
+        this.errorMessage = 'Solution not found.';
+      } else {
+        this.errorMessage = 'An error has occurred.';
+      }
+
+      setTimeout(() => { this.errorMessage = ''; }, 5000);
+    }
+  );
+}
+
+
   
   
 

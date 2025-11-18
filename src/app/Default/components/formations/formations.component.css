@@ -1,17 +1,19 @@
 .body {
-    background-color: #f8f9fa; /* Light background for better contrast */
-    background: linear-gradient(55deg, #9179de 0%, #d187e4 40%, #b4c8f4 60%, #4969c9 85%);
+    background-color: #f8f9fa; 
+    background: linear-gradient(45deg, #002c56, #004d72, #00768c);
+    
 }
+
 
 .formations-table {
     display: flex;
-    justify-content: center; /* Centers the table horizontally */
+    justify-content: center; 
     margin-top: 20px;
 }
 
 .formations-table table {
     margin-top: 5%;
-    width: 80%; /* Reduces the table width */
+    width: 80%; 
     border-collapse: collapse;
     background-color: #ffffff;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -24,7 +26,7 @@
 }
 
 .formations-table th {
-    background-color: #6c5ce7;
+    background-color: #73727a;
     color: white;
     font-weight: bold;
 }
@@ -39,7 +41,7 @@
 
 .btn-register {
     padding: 8px 12px;
-    background-color: #6c5ce7;
+    background-color: #73727a;
     color: white;
     border: none;
     cursor: pointer;
@@ -48,5 +50,5 @@
 }
 
 .btn-register:hover {
-    background-color: #5a4ac7;
+    background-color: rgb(9, 67, 94);
 }

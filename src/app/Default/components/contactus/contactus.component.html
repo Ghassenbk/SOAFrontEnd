@@ -2,10 +2,11 @@
 <div class="body">
 
 <app-header></app-header>
+
 <div class="my-5 px-4">
-    <h2 CLASS="fw-bold   text-center">CONTACTEZ NOUS</h2>
+    <h2 CLASS="fw-bold   text-center" style="color: white;">CONTACTEZ NOUS</h2>
     <div class="h-line bg-dark "></div>
-    <p class="text-center mt-3 ">
+    <p class="text-center mt-3 " style="font-size:20px;color: white;">
 
 
       N'hésitez pas à nous contacter si vous avez des questions ou besoin d'assistance.<br>
@@ -18,29 +19,28 @@
     <div class="row">
         <div class="col-lg-6 col-md-6 mb-5 px-4">
             <div class="bg-white rounded shadow p-4 " >
-                <iframe class="w-100 rounded mb-4" height="320px"   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d474.6663375258736!2d10.239818916942344!3d36.83860149379118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12fd356ed2752363%3A0xbfa95ad24ab78aa3!2sOutlet%20STORE!5e0!3m2!1sen!2stn!4v1736373946293!5m2!1sen!2stn" loading="lazy"></iframe>
+                <iframe class="w-100 rounded mb-4" height="320px"   [(src)]="companyInfo.iframe" loading="lazy" ></iframe>
                 <h5>Addresse</h5>
                 <a href="" target="_blank" class="d-inline-block text-decoration-none text-dark mb-2">
                     <i class="bi bi-geo-alt-fill"></i>
+                    {{companyInfo.address}}
                 </a>
 
                 <h5 class="mt-4" >Appelez nous</h5>
-                <a href="tel:+" class="d-inline-block mb-2 text-decoration-none text-dark">
-                    <i class="bi bi-telephone-fill"></i> + 
+                <a href="tel:" class="d-inline-block mb-2 text-decoration-none text-dark">
+                    <i class="bi bi-telephone-fill"></i>  {{companyInfo.phone}}
                 </a><br>
                 
 
-                <h5 class="mt-4">Email</h5>
-                <a href="mailto:" class="d-inline-block  text-decoration-none text-dark"><i class="bi bi-envelope-fill"></i>
-                    </a>
+               
 
                 <h5 class="mt-4">Suivez-nous</h5>
                 
 
-                <a href=" " class="d-inline-block mb-3 text-dark fs-5 me-2">
+                <a [(href)]="companyInfo.facebookurl" class="d-inline-block mb-3 text-dark fs-5 me-2">
                     <i class="bi bi-facebook me-1"></i>
                 </a>
-                <a href=" " class="d-inline-block mb-3 text-dark fs-5 me-2">
+                <a [(href)]="companyInfo.instagramurl" class="d-inline-block mb-3 text-dark fs-5 me-2">
                     <i class="bi bi-instagram me-1"></i>
                 </a>
             </div>

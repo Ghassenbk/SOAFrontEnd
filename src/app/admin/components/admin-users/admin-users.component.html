@@ -26,9 +26,14 @@
           <td>{{ user.adresse }}</td>
           <td>{{ user.phone }}</td>
           <td>
-            <ul>
-              <li *ngFor="let formation of user.formations">{{ formation.name }}&nbsp;&nbsp;&nbsp;{{ formation.dateDebut |date }}&nbsp;/&nbsp;{{ formation.dateFin|date }} </li>
+            <ul *ngIf="user.formations.length > 0; else noFormations">
+              <li *ngFor="let formation of user.formations">
+                {{ formation.name }}&nbsp;&nbsp;&nbsp;{{ formation.dateDebut | date }}&nbsp;/&nbsp;{{ formation.dateFin | date }}
+              </li>
             </ul>
+            <ng-template #noFormations>
+              <p class="text-muted">Cet utilisateur n'est pas inscrit à aucune formation.</p>
+            </ng-template>
           </td>
           <td>
             <a (click)="deleteUser(user.id)" class="btn btn-danger">Delete</a>

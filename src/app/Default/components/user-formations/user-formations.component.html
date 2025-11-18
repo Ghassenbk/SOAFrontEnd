@@ -1,41 +1,44 @@
 <div class="body">
-    <app-header></app-header>
-    <div class="formations-table">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nom</th>
-            <th>Description</th>
-            <th>Date de début</th>
-            <th>Date de fin</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let formation of formations">
-            <td>{{formation.id}}</td>
-            <td>{{formation.name}}</td>
-            <td>{{formation.description}}</td>
-            <td>{{formation.dateDebut | date}}</td>
-            <td>{{formation.dateFin | date}}</td>
-            <td>
-              <!-- Determine the status of the formation -->
-              <ng-container *ngIf="isActive(formation)">
-                Active
-              </ng-container>
-              <ng-container *ngIf="!isActive(formation) && isBeforeStart(formation)">
-                {{getDaysRemaining(formation)}} jours restants
-              </ng-container>
-              <ng-container *ngIf="!isActive(formation) && !isBeforeStart(formation)">
-                Finished
-              </ng-container>
-            </td>
-            <td><a class="btn btn-danger" (click)="unsubscribe(formation.id)">Se désabonner</a></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <app-header></app-header>
+  <div class="formations-table">
+    <table *ngIf="formations.length > 0; else noFormations">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Date de début</th>
+          <th>Date de fin</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let formation of formations">
+          <td>{{formation.id}}</td>
+          <td>{{formation.name}}</td>
+          <td>{{formation.description}}</td>
+          <td>{{formation.dateDebut | date}}</td>
+          <td>{{formation.dateFin | date}}</td>
+          <td>
+            <ng-container *ngIf="isActive(formation)">
+              Active
+            </ng-container>
+            <ng-container *ngIf="!isActive(formation) && isBeforeStart(formation)">
+              {{getDaysRemaining(formation)}} jours restants
+            </ng-container>
+            <ng-container *ngIf="!isActive(formation) && !isBeforeStart(formation)">
+              Finished
+            </ng-container>
+          </td>
+          <td>
+            <a class="btn btn-danger" (click)="unsubscribe(formation.id)">Se désabonner</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noFormations>
+      <p class="no-formations">Vous n'êtes abonné à aucune formation</p>
+    </ng-template>
   </div>
-  
+</div>

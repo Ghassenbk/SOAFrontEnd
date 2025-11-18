@@ -26,11 +26,11 @@ export class SolutionService {
   deleteSolution(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
-  addSolution(solution: any): Observable<any> {
+  addSolution(solution: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`, solution);
   }
-  updateSolution(solution: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${solution.id}`,solution);
+  updateSolution(solutionData: FormData, id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, solutionData);
   }
   
 }

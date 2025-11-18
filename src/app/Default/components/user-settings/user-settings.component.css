@@ -1,5 +1,16 @@
 .body {
-    background-color: #f8f9fa; /* Light background for better contrast */
+    background-color: #f8f9fa; 
     background: linear-gradient(55deg, #9179de 0%, #d187e4 40%, #b4c8f4 60%, #4969c9 85%);
     align-items: center;
+    padding-top: 80px; 
+
 }
+app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; 
+    background-color: white; 
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+  }

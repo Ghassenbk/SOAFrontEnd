@@ -1,29 +1,48 @@
 
 <div class="body">
   <app-header></app-header>
-    <div class="container">
-
-      <div class="container mt-3 mb-5">
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
-          <button class="btn btn-secondary" type="submit">Rechercher</button>
-        </form>
-      </div>
-        <div>
-        <div class="row">
-          <div *ngFor="let solution of solutions" class="col mb-4">
-            <div  class="card" style="width: 18rem; ">
-                <img [src]="solution.image" class="card-img-top" alt="image de la soultion">
-                <div class="card-body">
-                  <h5 class="card-title">{{solution.name}}</h5>
-                  <p class="card-text">{{ solution.description }}</p>
-                  <p>{{solution.prix}}.DT</p>
-                  <button class="btn btn-secondary" (click)="addToCart(solution.id)">Ajouter Au panier</button>
-                </div>
-              </div>
-          </div>
+  <br><br>
+  <div class="container mt-3 mb-5">
+       <!-- Introduction -->
+       <section class="intro-section text-center mb-4">
+        <h2>Découvrez Nos Solutions</h2>
+        <p style="font-size:18px;">
+          Explorez notre large gamme de solutions conçues pour répondre à vos besoins spécifiques. Que vous soyez à la recherche de logiciels pour optimiser votre gestion ou d'outils innovants pour accélérer votre transformation digitale, nous avons la solution qu'il vous faut.
+        </p>
+      </section>
+    <!-- Search Bar -->
+    <div class="input-group">
+      
+      <input 
+        type="text" 
+        class="form-control" 
+        placeholder="Search solutions..." 
+        [(ngModel)]="mot" 
+        (input)="applyFilter()">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+    </div>
+    
+    <br><br>
+  
+    <!-- Filtered Solutions in Grid Layout -->
+    <div class="row g-4"> <!-- g-4 adds space between grid columns -->
+      <div *ngFor="let solution of filteredSolutions" class="col-12 col-sm-6 col-md-3">
+        <div class="card ml-5" style="width: 100%;">
+          <img [src]="solution.image" class="card-img-top" alt="Solution Image">
+          <div class="card-body">
+            <h5 class="card-title">{{ solution.name }}</h5>
+            <p class="card-text">{{ solution.description }}</p>
+            <p>{{ solution.prix }} DT</p>
+            <div class="actions">
+              <button class="btn btn-secondary" (click)="addToCart(solution.id)">Ajouter Au panier</button>
+              <a class="pdf" [href]="solution.devis" target="_blank"><i class="bi bi-filetype-pdf" style="font-size: 25px;"></i></a>
+            </div>
         </div>
-        </div>
-         
       </div>
+    </div>
+  </div>
+  
+    
+  
+  
 </div>

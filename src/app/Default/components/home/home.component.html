@@ -1,49 +1,29 @@
-
+  <!-- Header Component -->
+<app-header></app-header>
 <div class="body">
-<!-- Main Content -->
-<div class="d-flex flex-column min-vh-100">
-    <!-- Header Component -->
-    <app-header></app-header>
+  <!-- Main Content -->
+  <div class="d-flex flex-column min-vh-100">
+  
+
     <!-- Main Content -->
     <div class="container-fluid px-0">
-        <!-- Section 0 -->
-        <div class="row section gx-0">
-            
-        </div>
-        
-        
-            
-        
-    </div>
-    
+      <!-- Section 0 -->
+      <div class="row section gx-0"></div>
 
-
-
-    <section class="about-section">
+      <section class="about-section">
         <h1 class="highlight-title">C2S PLUS</h1>
         <h2 class="main-title">LEADER SAGE EN TUNISIE, ET REVENDEUR SAGE</h2>
-        <p>C2S PLUS (Revendeur Sage en Tunisie) est un acteur majeur dans les services et l’ingénierie informatique spécialisé dans l’intégration des ERP (Entreprise Ressources Planning) et des solutions de gestion d’entreprises.</p>
-        <p>Notre offre s’adresse aux entreprises de petites, moyennes et grandes tailles opérant dans différents secteurs d’activités (Industrie/Négoce/Télécom/- Bancaire/Services…) et s’articule autour de la gamme des logiciels.</p>
-        <p>
-          <strong>C2S PLUS (Revendeur Sage en Tunisie)</strong> est aujourd’hui une entreprise à taille humaine qui s’adresse au marché tunisien et Maghrébin avec des solutions répondant au contexte particulier de chaque projet tout en apportant son savoir-faire métier pour accompagner au mieux ses clients et rendre structurant des outils de gestion standards ainsi que la mise à niveau de leur infrastructure informatique.
-        </p>
-    
+        <p>C2S PLUS (Revendeur Sage en Tunisie) est un acteur majeur dans les services et l’ingénierie informatique...</p>
+
         <h3 class="section-subtitle">EN TANT QU'INTÉGRATEUR SAGE, AVEC C2S PLUS, VOUS</h3>
         <ul class="benefits-list">
           <li>Accélérez la transformation digitale de votre entreprise.</li>
           <li>Pilotez votre activité en temps réel avec les logiciels Sage.</li>
           <li>Accompagnez votre croissance.</li>
-          <li>Automatisez vos processus de gestion pour gagner du temps et réduire le risque d’erreur.</li>
-          <li>Dématérialisez vos documents pour une réduction des coûts et une meilleure traçabilité.</li>
-          <li>Bénéficiez de fonctionnalités innovantes et d’assistants métiers.</li>
-          <li>Disposez d’indicateurs en temps réel.</li>
         </ul>
       </section>
 
-
-
-
-    <section class="services-section">
+      <section class="services-section">
         <h2 class="section-title">NOS SERVICES</h2>
         <div class="services-container">
           <div class="service-card">
@@ -54,12 +34,12 @@
           <div class="service-card">
             <h3>DÉVELOPPEMENT</h3>
             <hr>
-            <p>Que ce soit pour le développement de fonctionnalités propres à des besoins particuliers, des besoins d’intégration de solutions progicielles, des besoins d’intégration de fonctionnalités innovantes, nous possédons les ressources pour répondre à vos besoins.</p>
+            <p>Que ce soit pour le développement de fonctionnalités propres à des besoins particuliers...</p>
           </div>
           <div class="service-card">
             <h3>INFOGÉRANCE</h3>
             <hr>
-            <p>Avec plus de 15 ans d’expérience et de savoir-faire en infogérance et en projets techniques, O2S Plus (revendeur et partenaire Sage en Tunisie) s’appuie sur son expérience et son savoir-faire pour accompagner ses clients dans la prise en charge et l’évolution de leurs systèmes d’information et ainsi faire face avec eux à leurs enjeux.</p>
+            <p>Avec plus de 15 ans d’expérience et de savoir-faire en infogérance et en projets techniques...</p>
           </div>
         </div>
         <div class="contact-button">
@@ -67,71 +47,37 @@
         </div>
       </section>
 
-      <div class="row section gx-0">       
+<!-- Floating Cards Section -->
+<div class="floating-cards-container" style="padding:0px 400px;">
+  <div class="row my-5 px-4">
+    <a routerLink="/solutions" class="card-link"> <!-- Make the whole card a link -->
+    <div class="floating-card text-center">
+      <h3 style="color: rgb(38, 242, 27);">Sage</h3>
+      <p><strong>Revendeur et intégrateur</strong></p>
+      <ul style="list-style-type: none;">
+        <li>Un audit pour trouver la <strong>SOLUTION SAGE</strong> qui vous correspond.</li>
+        <li>Des consultants <strong>CERTIFIÉS SAGE</strong> pour une garantie de qualité.</li>
+        <li>Un accompagnement dédié dans l’utilisation de vos <strong>LOGICIELS SAGE</strong>.</li>
+      </ul>
+    </div>
+  </a>
+  </div>
+<br>
+
+  <!--<div class="row my-5 px-4">
+    <div class="floating-card text-center">
+      <h3>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" 
+             alt="Microsoft Partner" style="height: 40px;">
+      </h3>
+      <p><strong>Revendeur Microsoft 365</strong></p>
+      <p>Microsoft 365 est la référence en matière d’application collaborative...</p>
+    </div>
+  </div>
+</div>-->
+
+
       </div>
-      <!-- Section 1
-          -->
-          <div class="row section gx-0">
-            <!-- Left Column -->
-            <br><br><br><br>
-            <div class="col-md-6 d-flex flex-column justify-content-center  px-4">
-                <h5 style="color:black;">Intégrateur et revendeur de logiciels Sage</h5>
-                <h2 style="color: black;">Choisissez un revendeur Sage certifié pour faire de votre projet une réussite</h2>
-                <p style="color: black;">O2S PLUS est un intégrateur et revendeur Sage depuis près de 20 ans. O2S PLUS met en place une méthodologie éprouvée en offrant un service d'excellence et de proximité.</p>
-                <div style="display: flex; justify-content: center; margin-top: 20px;"><a class="btn btn-green px-5 py-1" routerLink="/solutions">Demandez votre Devis</a></div>
-            </div>
-            
-            <!-- Right Column -->
-            <div class="col-md-6 d-flex flex-column justify-content-center  px-4">
-              <h5 style="color: black;">Intégrateur et revendeur Microsoft</h5>
-              <h2 style="color: black;" >Accélérez votre transformation numérique avec les solutions Microsoft</h2>
-              <p style="color: black;">Intégrateur partenaire Microsoft, nous accompagnons les PME-PMI dans l'ensemble des projets liés à l'informatique de gestion.</p>
-              <br>
-              <div style="display: flex; justify-content: center; margin-top: 20px;"><a class="btn btn-green px-4 py-1" routerLink="/contact">Contactez nous</a></div>
-              
-          </div>
-            
-        
-        </div>
-
-        <!-- Floating Cards Section -->
-        <div class="row my-5 px-4">
-            <!-- Left Floating Card -->
-            <div class="col-md-6 ">
-              <div class="floating-card text-center">
-                  <div>
-                      <h3 class="text-center"><span style="color: #00d84a;">Sage</span></h3>
-                      <p><strong>Revendeur et intégrateur</strong></p>
-                      <ul>
-                          <p>Un audit pour trouver la <strong>SOLUTION SAGE</strong> qui vous correspond.
-                          Des consultants <strong>CERTIFIÉS SAGE</strong> pour une garantie de qualité.
-                          Un accompagnement dédié dans l’utilisation de vos <strong>LOGICIELS SAGE</strong>.</p>
-                      </ul>
-                  </div>
-              </div>
-          </div>
-            
-            <!-- Right Floating Card 
-             -->
-             <div class="col-md-6">
-              <div class="floating-card text-center">
-                  <h3 class="text-center">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft Partner" style="height: 40px;">
-                  </h3>
-                  <p><strong>Revendeur Microsoft 365</strong></p>
-                  <p>Microsoft 365 est la référence en matière d’application collaborative.
-                      C’est la solution par excellence pour booster la productivité et la performance de vos clients.</p>                   
-              </div>
-          </div> </div>
-
-
-    
-
-    <!-- Footer Component  <app-footer class="mt-auto"></app-footer> -->
-    
-    
+    </div>
+  
 </div>
-
-
-</div>
-

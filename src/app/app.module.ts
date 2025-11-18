@@ -3,6 +3,8 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+
 
 import { RouterModule, Routes } from '@angular/router';
 
@@ -55,7 +57,7 @@ import { UserSettingsComponent } from './Default/components/user-settings/user-s
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
   ],
   providers: [
     provideClientHydration(),

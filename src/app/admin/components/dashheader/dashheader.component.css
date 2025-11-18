@@ -1,15 +1,15 @@
-/* Sidebar */
+
 #dashboard-menu {
-    min-width: 300px; /* Increased width for the sidebar */
-    height: 100vh; /* Full height for the sidebar */
-    position: sticky; /* Stays fixed when scrolling */
+    min-width: 300px; 
+    height: 100vh; 
+    position: sticky; 
     top: 0;
-    overflow-y: auto; /* Adds a scrollbar if content overflows */
+    overflow-y: auto; 
   }
   
-  /* Main content */
+
   #main-content {
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-x: hidden; 
   }
   
   

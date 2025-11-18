@@ -32,6 +32,7 @@ export class AdminFormationsComponent implements OnInit {
             this.formations = this.formations.filter(formation => formation.id !== id);
           },
           error => {
+
             console.error('Error deleting solution:', error);
           }
         );

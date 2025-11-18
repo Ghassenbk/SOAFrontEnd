@@ -1,8 +1,9 @@
 
 <nav class="navbar navbar-expand-lg navbar-light  py-1">
     <div class="container-fluid">
+    
       <!-- Brand on the left -->
-      <a class="navbar-brand fs-1" routerLink="/">Computer Soft Service </a>
+      <a class="navbar-brand fs-1" routerLink="/">{{companyInfo.name}}</a>
   
       <!-- Toggler for smaller screens -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +27,7 @@
 
 
             <li *ngIf="currentUser && currentUser.role === 'ADMIN'" >
-              <a class="nav-link active fs-5" aria-current="page" routerLink="/admin_solution">&nbsp;<i class="bi bi-gear-fill"></i></a>
+              <a class="nav-link active fs-5" aria-current="page" routerLink="/admin_settings">&nbsp;<i class="bi bi-gear-fill"></i></a>
             </li>
 
 
@@ -52,14 +53,14 @@
                 Register
             </button>
             <div *ngIf="currentUser" ngbDropdown class="dropdown">
-              <button ngbDropdownToggle class="btn btn-circle" aria-expanded="false">
+              <button ngbDropdownToggle class="btn btn-circle" aria-expanded="false" >
                 <span class="user-initials">{{ currentUser.name | slice:0:1 }}</span>
               </button>
               <ul ngbDropdownMenu class="dropdown-menu" [ngStyle]="{'position': 'absolute', 'z-index': '1050', 'top': '100%', 'left': '50%', 'transform': 'translateX(-50%)', 'width': 'auto'}">
                 <li><span class="user-name">Welcome, {{ currentUser.name }}!</span>
                 </li>
-                <li *ngIf="currentUser && currentUser.role === 'CLIENT'"><a ngbDropdownItem routerLink="/user_formations">Mes Formations</a></li>
-                <li *ngIf="currentUser && currentUser.role === 'CLIENT'"><a ngbDropdownItem routerLink="/user_settings">Parametre&nbsp;&nbsp;&nbsp;<i class="bi bi-gear-fill"></i></a></li>
+              <li *ngIf="currentUser && currentUser.role === 'CLIENT'"><a ngbDropdownItem routerLink="/user_formations">Mes Formations</a></li>
+               <!-- <li *ngIf="currentUser && currentUser.role === 'CLIENT'"><a ngbDropdownItem routerLink="/user_settings">Parametre&nbsp;&nbsp;&nbsp;<i class="bi bi-gear-fill"></i></a></li>-->
 
                 <li><button class="btn btn-outline-danger" ngbDropdownItem (click)="logout()">Logout</button></li>
               </ul>
@@ -83,7 +84,7 @@
   <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-          <form (ngSubmit)="login()">
+          <form (ngSubmit)="login()" style="color: black;">
             <div class="modal-header">
               <h5 class="modal-title d-flex align-items-center">
                 <i class="bi bi-person-circle fs-3 me-2"></i> User Login
@@ -94,7 +95,10 @@
               <!-- Email Input -->
               <div class="mb-3">
                 <label class="form-label">Adresse Email</label>
-                <input type="email" [(ngModel)]="loginData.email" name="email" class="form-control shadow-none" required #email="ngModel">
+                <input type="email" [(ngModel)]="loginData.email" name="email" class="form-control shadow-none" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" required #emailInput="ngModel">
+                <div *ngIf="emailInput.invalid && emailInput.touched" class="text-danger">
+                  {{ getLoginEmailError(emailInput) }}
+                </div>
               </div>
               
               <!-- Password Input -->
@@ -119,18 +123,17 @@
 <div class="modal fade" id="registerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" style="color: black;">
         <div class="modal-header">
           <h5 class="modal-title d-flex align-items-center">
-            <i class="bi bi-person-lines-fill fs-3 me-2"></i> User Registration
+            <i class="bi bi-person-lines-fill fs-3 me-2"></i>Inscription
           </h5>
           <button type="reset" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-            Note: Your details must match your ID (CIN, Passport, Driving License, etc.) that will be required during check-in.
+            Note: Remplissez soigneusement ce formulaire, car les informations fournies sont très importantes.
           </span>
-
           <!-- Message Display -->
           <div *ngIf="message" [ngClass]="{'alert': true, 'alert-success': messageType === 'success', 'alert-danger': messageType === 'error'}" class="mb-3">
             {{ message }}
@@ -138,48 +141,73 @@
 
           <div class="container-fluid">
             <div class="row">
+              <!-- Name -->
               <div class="col-md-6 ps-0 mb-3">
-                <label class="form-label">Name</label>
-                <input name="name" type="text" class="form-control shadow-none" [(ngModel)]="user.name" required #name="ngModel">
-                <div *ngIf="name.invalid && name.touched" class="text-danger">Name is required</div>
+                <label class="form-label">Nom</label>
+                <input name="name" type="text" class="form-control shadow-none" formControlName="name">
+                <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="text-danger">
+                  {{ getErrorMessage('name') }}
+                </div>
               </div>
+
+              <!-- Email -->
               <div class="col-md-6 p-0 mb-3">
-                <label class="form-label">Email address</label>
-                <input name="email" type="email" class="form-control shadow-none" [(ngModel)]="user.email" required email #email="ngModel">
-                <div *ngIf="email.invalid && email.touched" class="text-danger">Valid email is required</div>
+                <label class="form-label">Adresse email</label>
+                <input name="email" type="email" class="form-control shadow-none" formControlName="email">
+                <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-danger">
+                  {{ getErrorMessage('email') }}
+                </div>
               </div>
+
+              <!-- Phone -->
               <div class="col-md-6 ps-0 mb-3">
-                <label class="form-label">Phone Number</label>
-                <input name="phone" type="number" class="form-control shadow-none" [(ngModel)]="user.phone" required #phone="ngModel">
-                <div *ngIf="phone.invalid && phone.touched" class="text-danger">Phone number is required</div>
+                <label class="form-label">Numéro de téléphone</label>
+                <input name="phone" type="number" class="form-control shadow-none" formControlName="phone">
+                <div *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched" class="text-danger">
+                  {{ getErrorMessage('phone') }}
+                </div>
               </div>
+
+              <!-- Address -->
               <div class="col-md-12 p-0 mb-3">
-                <label class="form-label">Address</label>
-                <input name="adresse" type="text" class="form-control shadow-none" rows="1" [(ngModel)]="user.adresse" required #adresse="ngModel">
-                <div *ngIf="adresse.invalid && adresse.touched" class="text-danger">Address is required</div>
+                <label class="form-label">Adresse</label>
+                <input name="adresse" type="text" class="form-control shadow-none" formControlName="adresse">
+                <div *ngIf="registerForm.get('adresse')?.invalid && registerForm.get('adresse')?.touched" class="text-danger">
+                  {{ getErrorMessage('adresse') }}
+                </div>
               </div>
-              
+
+              <!-- Password -->
               <div class="col-md-6 ps-0 mb-3">
-                <label class="form-label">Password</label>
-                <input name="pass" type="password" class="form-control shadow-none" [(ngModel)]="user.password" required minlength="6" #password="ngModel">
-                <div *ngIf="password.invalid && password.touched" class="text-danger">Password is required (minimum 6 characters)</div>
+                <label class="form-label">Mot de passe</label>
+                <input name="password" type="password" class="form-control shadow-none" formControlName="password">
+                <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-danger">
+                  {{ getErrorMessage('password') }}
+                </div>
               </div>
+
+              <!-- Confirm Password -->
               <div class="col-md-6 p-0 mb-3">
-                <label class="form-label">Confirm Password</label>
-                <input name="cpass" type="password" class="form-control shadow-none" [(ngModel)]="user.confirmPassword" required [pattern]="user.password" #confirmPassword="ngModel">
-                <div *ngIf="confirmPassword.invalid && confirmPassword.touched" class="text-danger">Passwords must match</div>
+                <label class="form-label">Confirmez le mot de passe</label>
+                <input name="confirmPassword" type="password" class="form-control shadow-none" formControlName="confirmPassword">
+                <div *ngIf="registerForm.hasError('notMatching') && registerForm.get('confirmPassword')?.touched" class="text-danger">
+                  {{ getErrorMessage('confirmPassword') }}
+                </div>
+                
               </div>
+
             </div>
           </div>
-
+         
           <div class="text-center my-1">
-            <button type="submit" class="btn btn-dark shadow-none" [disabled]="registerForm.invalid">REGISTER</button>
+            <button type="submit" class="btn btn-dark shadow-none" [disabled]="registerForm.invalid">s'inscrire</button>
           </div>
         </div>
       </form>
     </div>
   </div>
 </div>
+
 
   
 
