@@ -1,35 +1,80 @@
 <div class="body">
-    <app-header ></app-header>
-    
-    <div class="mb-3">
-        <br>
+  <app-header></app-header>
+
+  <div class="container mt-5 mb-5">
+
+    <!-- Section Title -->
+    <section class="text-center mb-5">
+      <h2 class="fw-bold">Nos Formations</h2>
+      <p class="text-muted lead" style="font-size: 1rem;">
+        Découvrez nos formations et inscrivez-vous facilement pour booster vos compétences.
+      </p>
+    </section>
+
+    <!-- Formations Grid -->
+    <div class="row g-4">
+      <div *ngFor="let formation of formations; let i = index" class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="card border-0 shadow-sm hover-lift h-100 position-relative">
+
+          <!-- Optional Badge -->
+          <span class="badge bg-primary position-absolute top-0 start-0 m-3">
+            Formation {{i+1}}
+          </span>
+
+          <div class="card-body d-flex flex-column">
+            <h5 class="fw-bold mb-2">{{formation.name}}</h5>
+            <p class="text-muted mb-2" style="font-size: 0.9rem;">{{formation.description}}</p>
+            <p class="mb-1"><strong>Date de début :</strong> {{formation.dateDebut | date}}</p>
+            <p class="mb-3"><strong>Date de fin :</strong> {{formation.dateFin | date}}</p>
+            <p class="fw-semibold mb-3">{{formation.prix}} DT</p>
+            <button class="btn btn-primary mt-auto">
+              <i class="bi bi-pencil-square me-1"></i>S'inscrire
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <div class="formations-table">
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Date de début</th>
-                    <th>Date de fin</th>
-                    <th>Prix</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor=" let formation of formations; let i=index  " >
-                    <td>{{i+1}}</td>
-                    <td>{{formation.name}}</td>
-                    <td>{{formation.description}}</td>
-                    <td>{{formation.dateDebut | date}}</td>
-                    <td>{{formation.dateFin | date }}</td>
-                    <td>{{formation.prix}}.DT</td>
-                    <td><button class="btn-register" (click)="enrollInFormation(formation.id)">S'inscrire</button></td>
-                </tr>
-                <!-- Add more rows as needed -->
-            </tbody>
-        </table>
-    </div>
+
+  </div>
 </div>
+
+<!-- Styles Falcon pour cards formations -->
+<style>
+  .hover-lift {
+    transition: all 0.3s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2) !important;
+  }
+
+  .card {
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+  }
+
+  .badge.bg-primary {
+    font-size: 0.75rem;
+    padding: 0.4em 0.6em;
+    border-radius: 0.5rem;
+  }
+
+  .btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+    transform: translateY(-1px);
+  }
+</style>
