@@ -1,154 +1,280 @@
 <app-dashheader>
-    <div>
-      <h3 class="mb-4">Solutions</h3>
-      <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 class="card-title m-0">Solutions</h5>
-            <button
-              type="button"
-              class="btn btn-dark shadow-none btn-sm"
-              data-bs-toggle="modal"
-              data-bs-target="#solution-s" (click)="resetNewSolution()">
-              <i class="bi bi-plus-square"></i> Add
-            </button>
-          </div>
-          <div class="table-responsive-md" style="height: 350px; overflow: scroll;">
-            <table class="table table-hover border">
-              <thead>
-                <tr class="bg-dark text-light">
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">Price</th>
-                  <th scope="col">Image</th>
-                  <th scope="col">Pdf File</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="features-data">
-                <tr *ngFor="let solution of solutions ; let i = index">
-                    <td>{{i+1}}</td>
-                    <td>{{solution.name}}</td>
-                    <td>{{solution.description}}</td>
-                    <td>{{solution.prix}}</td>
-                    <td><img [src]="solution.image"></td>
-                    <td><a [href]="solution.devis" target="_blank"><i class="bi bi-filetype-pdf" style="font-size: 25px;"></i></a></td>
+  <div>
+    <h3 class="mb-4">Solutions</h3>
 
-                    <td><a class="btn btn-secondary " data-bs-toggle="modal"
-                      data-bs-target="#Modifysolution-s" (click)=" editSolution(solution)"><i class="bi bi-pencil-square"></i></a>&nbsp;
-                      <a class="btn btn-danger" (click)="deleteSolution(solution.id)"><i class="bi bi-trash3"></i></a>
-                    </td>          
-                </tr>
-              </tbody>
-            </table>
+    <!-- FILTRES & TRI -->
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body">
+        <div class="row g-3 align-items-end">
+          <!-- Recherche par nom -->
+          <div class="col-md-3">
+            <label class="form-label fw-bold text-dark">Rechercher par nom</label>
+            <input type="text" class="form-control" [(ngModel)]="filterName" (input)="applyFilters()"
+                   placeholder="Ex: Angular, Cloud...">
+          </div>
+
+          <!-- Filtre par prix -->
+          <div class="col-md-3">
+            <label class="form-label fw-bold text-dark">Prix max (€)</label>
+            <input type="number" class="form-control" [(ngModel)]="filterMaxPrice" (input)="applyFilters()"
+                   placeholder="Ex: 5000">
+          </div>
+
+          <!-- Tri par catégorie -->
+          <div class="col-md-3">
+            <label class="form-label fw-bold text-dark">Trier par catégorie</label>
+            <select class="form-select" [(ngModel)]="sortCategory" (change)="applyFilters()">
+              <option [ngValue]="null">Toutes les catégories</option>
+              <option *ngFor="let c of categories" [ngValue]="c.id">{{ c.nom }}</option>
+            </select>
+          </div>
+
+          <!-- Tri par fournisseur & prix -->
+          <div class="col-md-3">
+            <label class="form-label fw-bold text-dark">Trier par</label>
+            <select class="form-select" [(ngModel)]="sortBy" (change)="applyFilters()">
+              <option value="name">Nom (A → Z)</option>
+              <option value="price-asc">Prix croissant</option>
+              <option value="price-desc">Prix décroissant</option>
+              <option value="fournisseur">Fournisseur</option>
+            </select>
           </div>
         </div>
       </div>
     </div>
-  </app-dashheader>
 
+    <!-- LISTE DES SOLUTIONS -->
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h5 class="card-title m-0">Solutions ({{ filteredSolutions.length }})</h5>
+          <button type="button" class="btn btn-dark shadow-none btn-sm"
+                  data-bs-toggle="modal" data-bs-target="#solution-s"
+                  (click)="resetNewSolution()">
+            <i class="bi bi-plus-square"></i> Add
+          </button>
+        </div>
 
-  <!-- Solution Modal-->
-<div class="modal fade" id="solution-s" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="table-responsive" style="height: 500px; overflow: auto;">
+          <table class="table table-hover align-middle border">
+            <thead class="table-dark sticky-top">
+              <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th>Catégorie</th>
+                <th>Fournisseur</th>
+                <th>Image</th>
+                <th>PDF</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let solution of filteredSolutions; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td><strong>{{ solution.name }}</strong></td>
+                <td>{{ solution.description || '—' }}</td>
+                <td><span class="badge bg-success fs-6">{{ solution.prix | currency:'EUR' }}</span></td>
+
+                <!-- BADGE CATÉGORIE AVEC COULEUR UNIQUE -->
+                <td>
+                  <span *ngIf="solution.categorie"
+                        class="badge rounded-pill px-3 py-2"
+                        [style.background-color]="getCategoryColor(solution.categorie.id)">
+                    {{ solution.categorie.nom }}
+                  </span>
+                  <span *ngIf="!solution.categorie" class="text-muted">—</span>
+                </td>
+
+                <td>
+                  <span class="badge bg-secondary">{{ solution.fournisseur?.nom || '—' }}</span>
+                </td>
+
+                <td>
+                  <img [src]="getImageUrl(solution.image)"
+                       alt="{{ solution.name }}"
+                       class="border rounded shadow-sm"
+                       style="width: 80px; height: 80px; object-fit: cover;">
+                </td>
+
+                <td>
+                  <a [href]="'http://localhost:9090' + solution.devis" target="_blank"
+                     class="text-danger">
+                    <i class="bi bi-filetype-pdf" style="font-size: 28px;"></i>
+                  </a>
+                </td>
+
+                <td>
+                  <button class="btn btn-outline-primary btn-sm me-1"
+                          data-bs-toggle="modal" data-bs-target="#Modifysolution-s"
+                          (click)="editSolution(solution)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button class="btn btn-outline-danger btn-sm"
+                          (click)="deleteSolution(solution.id)">
+                    <i class="bi bi-trash3"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Si aucune solution -->
+          <div *ngIf="filteredSolutions.length === 0" class="text-center py-5 text-muted">
+            <i class="bi bi-inbox display-1"></i>
+            <p class="mt-3">Aucune solution trouvée avec ces filtres.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-dashheader>
+
+<!-- ADD MODAL -->
+<div class="modal fade" id="solution-s" tabindex="-1">
   <div class="modal-dialog">
-    <form (ngSubmit)="addSolution()" #solutionForm="ngForm">
+    <form (ngSubmit)="addSolution()" #addForm="ngForm">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Add Solution</h5>
+          <h5 class="modal-title">Add New Solution</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <!-- Display error message -->
-          <div *ngIf="errorMessage" class="alert alert-danger">
-            {{ errorMessage }}
-          </div>
+          <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
           <div class="mb-3">
             <label class="form-label">Name</label>
-            <input [(ngModel)]="newSolution.name" name="solution_name" type="text" class="form-control shadow-none" required #name="ngModel">
+            <input [(ngModel)]="newSolution.name" name="name" type="text" class="form-control" required #name="ngModel">
             <div *ngIf="name.invalid && name.touched" class="text-danger">Name is required</div>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Description</label>
-            <input [(ngModel)]="newSolution.description" name="solution_description" type="text" class="form-control shadow-none" required #description="ngModel">
-            <div *ngIf="description.invalid && description.touched" class="text-danger">Description is required</div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Price</label>
-            <input [(ngModel)]="newSolution.prix" name="solution_price" type="number" class="form-control shadow-none" required [min]="0.01" #prix="ngModel">
-            <div *ngIf="prix.invalid && prix.touched" class="text-danger">Price must be greater than 0</div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Image File</label>
-            <input [(ngModel)]="newSolution.image" name="solution_image" type="file" (change)="onFileSelected($event)" class="form-control shadow-none" required #image="ngModel">
-            <div *ngIf="image.invalid && image.touched" class="text-danger">Image URL is required</div>
-          </div>
-          <!-- PDF File Upload Input -->
-          <div class="mb-3">
-            <label class="form-label">PDF File</label>
-            <input [(ngModel)]="newSolution.devis" name="solution_pdf" type="file" (change)="onPdfFileSelected($event)" class="form-control shadow-none" required #pdf="ngModel">
-            <div *ngIf="pdf.invalid && pdf.touched" class="text-danger">PDF File is required</div>
+            <input [(ngModel)]="newSolution.description" name="description" type="text" class="form-control" required>
           </div>
 
+          <div class="mb-3">
+            <label class="form-label">Price (€)</label>
+            <input [(ngModel)]="newSolution.prix" name="prix" type="number" min="0.01" step="0.01" class="form-control" required>
+          </div>
+          <!-- CATEGORIE -->
+          <div class="mb-3">
+            <label class="form-label">Catégorie</label>
+            <select [(ngModel)]="newSolution.categorie" name="categorie" class="form-select" required>
+              <option [ngValue]="null">Choisir une catégorie</option>
+              <option *ngFor="let c of categories" [ngValue]="c">{{ c.nom }}</option>
+            </select>
+          </div>
+
+          <!-- FOURNISSEUR -->
+          <div class="mb-3">
+            <label class="form-label">Fournisseur</label>
+            <select [(ngModel)]="newSolution.fournisseur" name="fournisseur" class="form-select">
+              <option [ngValue]="null">Aucun</option>
+              <option *ngFor="let f of fournisseurs" [ngValue]="f">{{ f.nom }}</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Image</label>
+            <input type="file" accept="image/*" (change)="onFileSelected($event)" class="form-control">
+            <small *ngIf="selectedFile" class="text-success d-block mt-1">
+              Selected: {{ selectedFile.name }}
+            </small>
+            <div *ngIf="!selectedFile && addForm.submitted" class="text-danger">Image is required</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">PDF File (Devis)</label>
+            <input type="file" accept=".pdf" (change)="onPdfFileSelected($event)" class="form-control">
+            <small *ngIf="selectedPdfFile" class="text-success d-block mt-1">
+              Selected: {{ selectedPdfFile.name }}
+            </small>
+            <div *ngIf="!selectedPdfFile && addForm.submitted" class="text-danger">PDF is required</div>
+          </div>
         </div>
+
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger shadow-none" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-dark shadow-none" [disabled]="solutionForm.invalid">Submit</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-dark">Add Solution</button>
         </div>
       </div>
     </form>
   </div>
 </div>
 
-  <!--Modify Solution Modal-->
-<div class="modal fade" id="Modifysolution-s" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!-- EDIT MODAL -->
+<div class="modal fade" id="Modifysolution-s" tabindex="-1">
   <div class="modal-dialog">
-    <form (ngSubmit)="updateSolution()" #solutionForm="ngForm">
+    <form (ngSubmit)="updateSolution()" #editForm="ngForm">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Add Solution</h5>
+          <h5 class="modal-title">Edit Solution</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <!-- Display error message -->
-          <div *ngIf="errorMessage" class="alert alert-danger">
-            {{ errorMessage }}
-          </div>
+          <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
           <div class="mb-3">
             <label class="form-label">Name</label>
-            <input [(ngModel)]="newSolution.name" name="solution_name" type="text" class="form-control shadow-none"  #name="ngModel">
-            <div *ngIf="name.invalid && name.touched" class="text-danger">Name is required</div>
+            <input [(ngModel)]="newSolution.name" name="name" type="text" class="form-control" required>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Description</label>
-            <input [(ngModel)]="newSolution.description" name="solution_description" type="text" class="form-control shadow-none"  #description="ngModel">
-            <div *ngIf="description.invalid && description.touched" class="text-danger">Description is required</div>
+            <input [(ngModel)]="newSolution.description" name="description" type="text" class="form-control">
           </div>
+
           <div class="mb-3">
-            <label class="form-label">Price</label>
-            <input [(ngModel)]="newSolution.prix" name="solution_price" type="number" class="form-control shadow-none"  [min]="0.01" #prix="ngModel">
-            <div *ngIf="prix.invalid && prix.touched" class="text-danger">Price must be greater than 0</div>
+            <label class="form-label">Price (€)</label>
+            <input [(ngModel)]="newSolution.prix" name="prix" type="number" min="0.01" step="0.01" class="form-control">
           </div>
+          <!-- CATEGORIE -->
           <div class="mb-3">
-            <label class="form-label">Image URL</label>
-            <input [(ngModel)]="newSolution.image" name="solution_image" (change)="onFileSelected($event)" type="file" class="form-control shadow-none" #image="ngModel">
-            <div *ngIf="image.invalid && image.touched" class="text-danger">Image URL is required</div>
+            <label class="form-label">Catégorie</label>
+            <select [(ngModel)]="newSolution.categorie" name="categorie" class="form-select" required>
+              <option [ngValue]="null">Choisir une catégorie</option>
+              <option *ngFor="let c of categories" [ngValue]="c">{{ c.nom }}</option>
+            </select>
           </div>
-          <!-- PDF File Upload Input -->
+
+          <!-- FOURNISSEUR -->
           <div class="mb-3">
-            <label class="form-label">PDF File</label>
-            <input [(ngModel)]="newSolution.devis" name="solution_pdf" type="file" (change)="onPdfFileSelected($event)" class="form-control shadow-none" required #pdf="ngModel">
-            <div *ngIf="pdf.invalid && pdf.touched" class="text-danger">PDF File is required</div>
+            <label class="form-label">Fournisseur</label>
+            <select [(ngModel)]="newSolution.fournisseur" name="fournisseur" class="form-select">
+              <option [ngValue]="null">Aucun</option>
+              <option *ngFor="let f of fournisseurs" [ngValue]="f">{{ f.nom }}</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Current Image</label><br>
+            <!-- In edit modal -->
+            <img [src]="getImageUrl(newSolution.image)"
+                style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;"
+                class="border">
+            <p class="mt-2"><strong>Change Image:</strong></p>
+            <input type="file" accept="image/*" (change)="onFileSelected($event)" class="form-control">
+            <small *ngIf="selectedFile" class="text-success d-block mt-1">New: {{ selectedFile.name }}</small>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Current PDF</label><br>
+            <a [href]="'http://localhost:9090' + newSolution.devis" target="_blank">
+              <i class="bi bi-filetype-pdf text-danger" style="font-size: 40px;"></i> Open Current PDF
+            </a>
+            <p class="mt-2"><strong>Change PDF:</strong></p>
+            <input type="file" accept=".pdf" (change)="onPdfFileSelected($event)" class="form-control">
+            <small *ngIf="selectedPdfFile" class="text-success d-block mt-1">New: {{ selectedPdfFile.name }}</small>
           </div>
         </div>
+
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger shadow-none" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-dark shadow-none" >Submit</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-dark">Update Solution</button>
         </div>
       </div>
     </form>
   </div>
 </div>
-
-
-
-
-  

@@ -31,11 +31,6 @@
           </a>
         </li>
 
-        <li class="nav-item mx-1">
-          <a class="nav-link text-dark fw-medium px-3 py-2 rounded hover-bg-light" routerLink="/formations" routerLinkActive="active">
-            Nos Formations
-          </a>
-        </li>
 
         <!-- Admin Settings -->
         <li class="nav-item mx-1" *ngIf="currentUser && currentUser.role === 'ADMIN'">
@@ -108,12 +103,6 @@
 
               <li><hr class="dropdown-divider my-1"></li>
 
-              <!-- Menu Items -->
-              <li *ngIf="currentUser && currentUser.role === 'CLIENT'">
-                <a ngbDropdownItem routerLink="/user_formations" class="d-flex align-items-center py-2">
-                  <i class="bi bi-journal-bookmark me-2 text-primary"></i> Mes Formations
-                </a>
-              </li>
 
               <li><hr class="dropdown-divider my-1"></li>
 

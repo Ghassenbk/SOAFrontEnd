@@ -1,0 +1,12 @@
+#confirmDeleteModal .modal-sm {
+  max-width: 380px;
+}
+
+#confirmDeleteModal .modal-content {
+  animation: popIn 0.25s ease-out;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}

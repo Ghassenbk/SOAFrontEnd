@@ -1,0 +1,163 @@
+<app-dashheader>
+  <div class="container-fluid px-4">
+    <h3 class="mb-4 text-dark fw-bold">Gestion des Fournisseurs</h3>
+    <!-- MESSAGE D'ERREUR GLOBAL (apparaît pour ajout, modif, suppression) -->
+    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+      <strong>Erreur :</strong> {{ errorMessage }}
+      <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+    </div>
+
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+      <div class="card-header bg-gradient-primary text-white py-4">
+        <div class="d-flex justify-content-between align-items-center">
+
+          <button class="btn btn-light btn-lg fw-bold shadow-sm" 
+                  data-bs-toggle="modal" 
+                  data-bs-target="#addFournisseurModal"
+                  (click)="resetNewFournisseur()">
+            <i class="bi bi-plus-circle-fill me-2"></i> Ajouter un Fournisseur
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body p-4">
+        <div class="table-responsive" style="max-height: 500px;">
+          <table class="table table-hover align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th>#</th>
+                <th>Nom du Fournisseur</th>
+                <th>Date d'ajout</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let f of fournisseurs; let i = index" class="animate__animated animate__fadeIn">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <strong class="text-primary">{{ f.nom }}</strong>
+                </td>
+                <td>
+                <span class="text-muted">
+                    <i class="bi bi-calendar-check me-1"></i>
+                    {{ f.createdAt | date:'dd MMM yyyy à HH:mm' }}
+                </span>
+                </td>
+                <td class="text-center">
+                  <button class="btn btn-outline-warning btn-sm me-2" 
+                          data-bs-toggle="modal" 
+                          data-bs-target="#editFournisseurModal"
+                          (click)="editFournisseur(f)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button class="btn btn-outline-danger btn-sm" 
+                          (click)="deleteFournisseur(f.id)">
+                    <i class="bi bi-trash3"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="fournisseurs.length === 0">
+                <td colspan="4" class="text-center py-5 text-muted">
+                  <i class="bi bi-inbox display-1 d-block mb-3"></i>
+                  <h5>Aucun fournisseur trouvé</h5>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-dashheader>
+
+<!-- ADD MODAL -->
+<div class="modal fade" id="addFournisseurModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-4">
+      <div class="modal-header bg-gradient-primary text-white">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-plus-circle me-2"></i> Nouveau Fournisseur
+        </h5>
+      </div>
+      <div class="modal-body p-5">
+        <div *ngIf="errorMessage" class="alert alert-danger animate__animated animate__shake">
+          {{ errorMessage }}
+        </div>
+        <div class="mb-4">
+          <label class="form-label fw-bold text-dark">Nom du fournisseur</label>
+          <input [(ngModel)]="newFournisseur.nom" 
+                 class="form-control form-control-lg shadow-sm" 
+                 placeholder="Ex: Microsoft, Google..." 
+                 required>
+        </div>
+      </div>
+      <div class="modal-footer bg-light">
+        <button class="btn btn-secondary px-4" data-bs-dismiss="modal">Annuler</button>
+        <button class="btn btn-primary px-5 fw-bold" (click)="addFournisseur()">
+          <i class="bi bi-check2"></i> Ajouter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal fade" id="editFournisseurModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-4">
+      <div class="modal-header bg-gradient-warning text-dark">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-pencil-square me-2"></i> Modifier Fournisseur
+        </h5>
+      </div>
+      <div class="modal-body p-5">
+        <div class="mb-4">
+          <label class="form-label fw-bold">Nom</label>
+          <input [(ngModel)]="newFournisseur.nom" 
+                 class="form-control form-control-lg shadow-sm" 
+                 required>
+        </div>
+      </div>
+      <div class="modal-footer bg-light">
+        <button class="btn btn-secondary px-4" data-bs-dismiss="modal">Annuler</button>
+        <button class="btn btn-warning px-5 fw-bold text-dark" (click)="updateFournisseur()">
+          <i class="bi bi-save"></i> Sauvegarder
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- CUSTOM CONFIRM DELETE MODAL – STYLE PERSONNALISÉ -->
+<!-- CONFIRM DELETE MODAL – VERSION COMPACTE & ÉLÉGANTE -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+
+      <div class="modal-header bg-danger text-white border-0 py-3">
+        <h6 class="modal-title fw-bold">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          Supprimer ?
+        </h6>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center py-4">
+        <p class="mb-2">Supprimer définitivement</p>
+        <strong class="text-primary" id="deleteFournisseurName"></strong>
+        <p class="text-muted small mt-2 mb-0">Action irréversible</p>
+      </div>
+
+      <div class="modal-footer justify-content-center border-0 pb-4 gap-3">
+        <button type="button" class="btn btn-outline-secondary btn-sm px-4" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button type="button" class="btn btn-danger btn-sm px-4 fw-bold" id="confirmDeleteBtn">
+          Supprimer
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

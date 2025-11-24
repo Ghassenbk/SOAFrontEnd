@@ -1,0 +1,17 @@
+.card {
+  border-radius: 12px;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f7f9fc;
+  cursor: pointer;
+}
+
+.modal-content {
+  border-radius: 12px;
+}
+
+.list-group-item {
+  border: none;
+  border-bottom: 1px solid #eee;
+}

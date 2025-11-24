@@ -1,5 +1,4 @@
 <div class="body">
-
   <app-header></app-header>
 
   <div class="container my-5">
@@ -11,94 +10,137 @@
         </p>
       </div>
 
-      <div class="row g-4">
-        <!-- Panier -->
-        <div class="col-md-5 col-lg-4 order-md-last">
-          <div class="card shadow-sm rounded p-4 h-100">
-            <h4 class="d-flex justify-content-between align-items-center mb-3">
-              <span class="text-primary">Votre Panier</span>
-              <span class="badge bg-primary rounded-pill">{{ cartItems.length }}</span>
-            </h4>
-            <ul class="list-group mb-3">
-              <li *ngFor="let item of cartItems" class="list-group-item d-flex justify-content-between align-items-center position-relative">
-                <div>
-                  <h6 class="my-0">{{ item.name }}</h6>
-                  <small class="text-muted">{{ item.description }}</small>
-                </div>
-                <span class="text-muted">{{ item.prix }} DT</span>
-                <button (click)="removeFromCart(item.id)" class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 m-2">
-                  ✖
-                </button>
-              </li>
-              <li class="list-group-item d-flex justify-content-between fw-bold">
-                <span>Total (DT)</span>
-                <strong>{{ totalPrice }} DT</strong>
-              </li>
-            </ul>
+      <div class="row g-5">
+        <!-- PANIER (droite sur grand écran) -->
+        <div class="col-lg-4 order-lg-last">
+          <div class="card shadow-sm border-0 rounded-4 sticky-top" style="top: 2rem;">
+            <div class="card-body p-4">
+              <h4 class="d-flex justify-content-between align-items-center mb-4">
+                <span class="text-primary fw-bold">Votre Panier</span>
+                <span class="badge bg-primary rounded-pill fs-6">{{ cartItems.length }}</span>
+              </h4>
+
+              <ul class="list-group list-group-flush">
+                <!-- Si panier vide -->
+                <li *ngIf="cartItems.length === 0" class="list-group-item text-center py-5 text-muted">
+                  <i class="bi bi-cart-x fs-1"></i>
+                  <p class="mt-3 mb-0">Votre panier est vide</p>
+                </li>
+
+                <!-- Items du panier -->
+                <li *ngFor="let item of cartItems" class="list-group-item px-0">
+                  <div class="row align-items-center">
+                    <div class="col-md-8">
+                      <h6 class="my-0 fw-semibold">{{ item.solution.name }}</h6>
+                      <small class="text-muted d-block">{{ item.solution.description }}</small>
+                    </div>
+                    <div class="col-md-4 text-end mt-2 mt-md-0">
+                      <div class="d-flex align-items-center justify-content-end gap-2">
+                        <span class="badge bg-primary rounded-pill">
+                          {{ item.quantite }} × {{ item.solution.prix | number:'1.2-2' }} DT
+                        </span>
+                      </div>
+                      <div class="fw-bold mt-1">
+                        {{ (item.quantite * item.solution.prix) | number:'1.2-2' }} DT
+                      </div>
+                      <button (click)="removeFromCart(item.solution.id)"
+                              class="btn btn-outline-danger btn-sm mt-2">
+                        Supprimer
+                      </button>
+                    </div>
+                  </div>
+                </li>
+
+                <!-- Total -->
+                <li class="list-group-item px-0 mt-3 border-top pt-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold">Total à payer</h5>
+                    <h4 class="mb-0 text-primary fw-bold">
+                      {{ totalPrice | number:'1.2-2' }} DT
+                    </h4>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <!-- Formulaire Paiement -->
-        <div class="col-md-7 col-lg-8">
-          <div class="card shadow-sm rounded p-4 h-100">
-            <form #paymentForm="ngForm" class="needs-validation" novalidate>
+        <!-- FORMULAIRE DE PAIEMENT (gauche) -->
+        <div class="col-lg-8">
+          <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body p-5">
+              <h3 class="mb-4">Mode de paiement</h3>
 
-              <h4 class="mb-3">Mode de paiement</h4>
-              <div class="mb-4">
-                <div class="form-check">
-                  <input id="credit" name="paymentMethod" type="radio" class="form-check-input" value="Visa" required>
-                  <label class="form-check-label" for="credit">Visa</label>
-                </div>
-                <div class="form-check">
-                  <input id="debit" name="paymentMethod" type="radio" class="form-check-input" value="MasterCard" required>
-                  <label class="form-check-label" for="debit">MasterCard</label>
-                </div>
-                <div class="form-check">
-                  <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" value="PayPal" required>
-                  <label class="form-check-label" for="paypal">PayPal</label>
-                </div>
-              </div>
+              <form #paymentForm="ngForm" (ngSubmit)="processPayment()" class="needs-validation" novalidate>
 
-              <div class="row g-3 mb-4">
-                <div class="col-md-6">
-                  <label for="cc-name" class="form-label">Nom sur la carte</label>
-                  <input type="text" class="form-control" id="cc-name" name="ccName" [(ngModel)]="ccName" required #ccNameInput="ngModel">
-                  <small class="text-muted">Nom complet tel qu'il apparaît sur la carte</small>
-                  <div *ngIf="ccNameInput.invalid && ccNameInput.touched" class="text-danger small">
-                    Le nom sur la carte est obligatoire.
+                <!-- Choix carte -->
+                <div class="mb-4">
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="visa" value="Visa" required>
+                    <label class="form-check-label fw-medium" for="visa">Visa</label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="mastercard" value="MasterCard" required>
+                    <label class="form-check-label fw-medium" for="mastercard">MasterCard</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="paypal" value="PayPal" required>
+                    <label class="form-check-label fw-medium" for="paypal">PayPal</label>
                   </div>
                 </div>
 
-                <div class="col-md-6">
-                  <label for="cc-number" class="form-label">Numéro de Carte de Crédit</label>
-                  <input type="number" class="form-control" id="cc-number" name="ccNumber" [(ngModel)]="ccNumber" required pattern="^[0-9]+$" #ccNumberInput="ngModel">
-                  <div *ngIf="ccNumberInput.invalid && ccNumberInput.touched" class="text-danger small">
-                    Le numéro de carte de crédit est obligatoire.
-                  </div>
-                </div>
+                <hr class="my-4">
 
-                <div class="col-md-3">
-                  <label for="cc-expiration" class="form-label">Expiration</label>
-                  <input type="date" class="form-control" id="cc-expiration" name="ccExpiration" [(ngModel)]="ccExpiration" required #ccExpirationInput="ngModel">
-                  <div *ngIf="ccExpirationInput.invalid && ccExpirationInput.touched" class="text-danger small">
-                    Date d'expiration requise
+                <!-- Champs carte -->
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label for="cc-name" class="form-label">Nom sur la carte</label>
+                    <input type="text" class="form-control form-control-lg" id="cc-name" 
+                           [(ngModel)]="ccName" name="ccName" #ccNameInput="ngModel" required>
+                    <div *ngIf="ccNameInput.invalid && ccNameInput.touched" class="text-danger small mt-1">
+                      Nom obligatoire
+                    </div>
                   </div>
-                </div>
 
-                <div class="col-md-3">
-                  <label for="cc-cvv" class="form-label">CVV</label>
-                  <input type="number" class="form-control" id="cc-cvv" name="ccCvv" [(ngModel)]="ccCvv" required #ccCvvInput="ngModel">
-                  <div *ngIf="ccCvvInput.invalid && ccCvvInput.touched" class="text-danger small">
-                    Code de sécurité requis
+                  <div class="col-12">
+                    <label for="cc-number" class="form-label">Numéro de carte</label>
+                    <input type="text" class="form-control form-control-lg" id="cc-number"
+                           [(ngModel)]="ccNumber" name="ccNumber" #ccNumberInput="ngModel" required minlength="16" maxlength="19">
+                    <div *ngIf="ccNumberInput.invalid && ccNumberInput.touched" class="text-danger small mt-1">
+                      Numéro de carte invalide
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              <button (click)="processPayment()" class="btn btn-primary w-100 btn-lg" type="button"
-                      [disabled]="ccNameInput.invalid || ccNumberInput.invalid || ccExpirationInput.invalid || ccCvvInput.invalid">
-                Confirmer le paiement
-              </button>
-            </form>
+                  <div class="col-md-6">
+                    <label for="cc-expiration" class="form-label">Expiration</label>
+                    <input type="month" class="form-control form-control-lg" id="cc-expiration"
+                           [(ngModel)]="ccExpiration" name="ccExpiration" #ccExpirationInput="ngModel" required>
+                    <div *ngIf="ccExpirationInput.invalid && ccExpirationInput.touched" class="text-danger small mt-1">
+                      Date requise
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="cc-cvv" class="form-label">CVV</label>
+                    <input type="text" class="form-control form-control-lg" id="cc-cvv"
+                           [(ngModel)]="ccCvv" name="ccCvv" #ccCvvInput="ngModel" required minlength="3" maxlength="4">
+                    <div *ngIf="ccCvvInput.invalid && ccCvvInput.touched" class="text-danger small mt-1">
+                      CVV requis
+                    </div>
+                  </div>
+                  </div>
+              
+
+                <hr class="my-5">
+
+                <button class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm"
+                        type="submit"
+                        [disabled]="paymentForm.invalid || cartItems.length === 0">
+                  <i class="bi bi-lock-fill me-2"></i>
+                  Payer {{ totalPrice | number:'1.2-2' }} DT
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -106,33 +148,6 @@
 
     <footer class="my-5 pt-5 text-muted text-center text-small">
       <p class="mb-1">&copy; 2001–2025 Computer Soft Service</p>
-      <ul class="list-inline">
-        <li class="list-inline-item"><a href="#">Privacy</a></li>
-        <li class="list-inline-item"><a href="#">Terms</a></li>
-        <li class="list-inline-item"><a href="#">Support</a></li>
-      </ul>
     </footer>
   </div>
-
 </div>
-
-<style>
-  .card {
-    border-radius: 0.5rem;
-  }
-  .list-group-item {
-    border-radius: 0.5rem;
-    position: relative;
-  }
-  .remove-btn {
-    top: 0.5rem;
-    right: 0.5rem;
-  }
-  .form-control:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.15);
-  }
-  .text-primary {
-    color: #0d6efd !important;
-  }
-</style>

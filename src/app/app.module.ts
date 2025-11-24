@@ -28,6 +28,8 @@ import { AdminSettingsComponent } from './admin/components/admin-settings/admin-
 import { UserFormationsComponent } from './Default/components/user-formations/user-formations.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserSettingsComponent } from './Default/components/user-settings/user-settings.component';
+import { AdminFournisseursComponent } from './admin/components/admin-fournisseurs/admin-fournisseurs.component';
+import { AdminCategoriesComponent } from './admin/components/admin-categories/admin-categories.component';
 
 
 
@@ -49,7 +51,9 @@ import { UserSettingsComponent } from './Default/components/user-settings/user-s
     AdminUsersComponent,
     AdminSettingsComponent,
     UserFormationsComponent,
-    UserSettingsComponent
+    UserSettingsComponent,
+    AdminFournisseursComponent,
+    AdminCategoriesComponent,
   ],
   imports: [
     BrowserModule,

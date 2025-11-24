@@ -14,6 +14,8 @@ import { AdminSettingsComponent } from './admin/components/admin-settings/admin-
 import { AdminUsersComponent } from './admin/components/admin-users/admin-users.component';
 import { UserFormationsComponent } from './Default/components/user-formations/user-formations.component';
 import { UserSettingsComponent } from './Default/components/user-settings/user-settings.component';
+import { AdminFournisseursComponent } from './admin/components/admin-fournisseurs/admin-fournisseurs.component';
+import { AdminCategoriesComponent } from './admin/components/admin-categories/admin-categories.component';
 
 const routes: Routes = [
   {path:'',component:HomeComponent},
@@ -27,6 +29,8 @@ const routes: Routes = [
   {path:'admin_paiements',component:AdminPaiementsComponent},
   {path:'admin_settings',component:AdminSettingsComponent},
   {path:'admin_user',component:AdminUsersComponent},
+  {path:'admin_fournisseurs',component:AdminFournisseursComponent},
+  {path:'admin_categories',component:AdminCategoriesComponent},
   {path:'user_formations',component:UserFormationsComponent},
   {path:'user_settings',component:UserSettingsComponent},
   {path:'**',redirectTo:''}

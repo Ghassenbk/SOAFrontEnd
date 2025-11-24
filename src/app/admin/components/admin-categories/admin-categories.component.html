@@ -1,0 +1,173 @@
+<app-dashheader>
+  <div class="container-fluid px-4">
+    <h3 class="mb-4 text-dark fw-bold">
+      <i class="bi bi-tags-fill me-3 text-success"></i> Gestion des Catégories
+    </h3>
+
+    <!-- MESSAGE D'ERREUR GLOBAL -->
+    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+      <strong>Erreur :</strong> {{ errorMessage }}
+      <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+    </div>
+
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+      <div class="card-header bg-gradient-success text-white py-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <button class="btn btn-light btn-lg fw-bold shadow-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addCategorieModal"
+                  (click)="resetNewCategorie()">
+            <i class="bi bi-plus-circle-fill me-2"></i> Ajouter une Catégorie
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body p-4 bg-light">
+        <div class="table-responsive" style="max-height: 520px;">
+          <table class="table table-hover align-middle bg-white rounded shadow-sm">
+            <thead class="table-success text-dark">
+              <tr>
+                <th>#</th>
+                <th>Nom de la Catégorie</th>
+                <th>Nombre de Produits</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cat of categories; let i = index" class="animate__animated animate__fadeIn">
+                <td><strong>{{ i + 1 }}</strong></td>
+                <td><span class="badge bg-success fs-6 px-3 py-2">{{ cat.nom }}</span></td>
+                <td>
+                    <span class="badge bg-secondary rounded-pill px-3 py-2">
+                    {{ cat.nombreProduits }} produit{{ cat.nombreProduits > 1 ? 's' : '' }}
+                    </span>
+                </td>
+                <td class="text-center">
+                  <button class="btn btn-outline-info btn-sm me-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editCategorieModal"
+                          (click)="editCategorie(cat)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                 <button class="btn btn-outline-danger btn-sm position-relative"
+                    (click)="openDeleteModal(cat.id, cat.nom)"
+                    [class.opacity-50]="cat.produits?.length > 0"
+                    [class.cursor-not-allowed]="cat.produits?.length > 0"
+                    [title]="cat.produits?.length > 0 ? cat.produits.length + ' produit(s) lié(s) → suppression impossible' : 'Supprimer cette catégorie'">
+                    <i class="bi bi-trash3"></i>
+                    <!-- Petit badge rouge si bloqué -->
+                    <span *ngIf="cat.produits?.length > 0"
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger small">
+                        {{ cat.produits.length }}
+                        <span class="visually-hidden">produits liés</span>
+                    </span>
+                </button>
+                </td>
+              </tr>
+              <tr *ngIf="categories.length === 0">
+                <td colspan="4" class="text-center py-5 text-muted">
+                  <i class="bi bi-folder-symlink display-1 d-block mb-3 opacity-25"></i>
+                  <h4>Aucune catégorie trouvée</h4>
+                  <p>Cliquez sur "Ajouter une Catégorie" pour commencer</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-dashheader>
+
+<!-- ADD MODAL -->
+<div class="modal fade" id="addCategorieModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-4 overflow-hidden">
+      <div class="modal-header bg-gradient-success text-white">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-plus-circle me-2"></i> Nouvelle Catégorie
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-5">
+        <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show">
+          <strong>Erreur :</strong> {{ errorMessage }}
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-bold text-dark fs-5">Nom de la catégorie</label>
+          <input [(ngModel)]="newCategorie.nom"
+                 class="form-control form-control-lg shadow-sm border-success"
+                 placeholder="Ex: Formation, Consulting, Développement..."
+                 required
+                 autofocus>
+        </div>
+      </div>
+      <div class="modal-footer bg-light border-0">
+        <button class="btn btn-secondary px-4" data-bs-dismiss="modal">Annuler</button>
+        <button class="btn btn-success px-5 fw-bold" (click)="addCategorie()">
+          <i class="bi bi-check2-circle me-2"></i> Créer la Catégorie
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal fade" id="editCategorieModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-4 overflow-hidden">
+      <div class="modal-header bg-gradient-warning text-dark">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-pencil-square me-2"></i> Modifier la Catégorie
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-5">
+        <div class="mb-4">
+          <label class="form-label fw-bold text-dark fs-5">Nom de la catégorie</label>
+          <input [(ngModel)]="newCategorie.nom"
+                 class="form-control form-control-lg shadow-sm"
+                 required>
+        </div>
+        <small class="text-muted">
+          <i class="bi bi-info-circle"></i>
+          {{ newCategorie.produits?.length || 0 }} produit(s) utilisent cette catégorie
+        </small>
+      </div>
+      <div class="modal-footer bg-light border-0">
+        <button class="btn btn-secondary px-4" data-bs-dismiss="modal">Annuler</button>
+        <button class="btn btn-warning px-5 fw-bold text-dark" (click)="updateCategorie()">
+          <i class="bi bi-save me-2"></i> Sauvegarder
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE MODAL – COMPACT & BEAU -->
+<div class="modal fade" id="confirmDeleteCategorieModal" tabindex="-1">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-header bg-danger text-white border-0 py-3">
+        <h6 class="modal-title fw-bold">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> Supprimer ?
+        </h6>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center py-4">
+        <p class="mb-2">Supprimer définitivement</p>
+        <strong class="text-success" id="deleteCategorieName"></strong>
+        <p class="text-muted small mt-2 mb-0">Action irréversible</p>
+      </div>
+      <div class="modal-footer justify-content-center border-0 pb-4 gap-3">
+        <button type="button" class="btn btn-outline-secondary btn-sm px-4" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button type="button" class="btn btn-danger btn-sm px-4 fw-bold" id="confirmDeleteCategorieBtn">
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
