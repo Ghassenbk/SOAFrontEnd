@@ -19,7 +19,7 @@ interface User {
 })
 
 export class UserService {
-  private apiUrl = 'http://localhost:9090/users';  // Adjust with your API base URL
+  private apiUrl = 'http://localhost:9090/users';
   private currentUserSubject = new BehaviorSubject<User | null>(this.getUserFromLocalStorage());
   currentUser = this.currentUserSubject.asObservable();
 
