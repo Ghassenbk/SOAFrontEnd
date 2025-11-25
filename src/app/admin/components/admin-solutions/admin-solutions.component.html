@@ -15,7 +15,7 @@
 
           <!-- Filtre par prix -->
           <div class="col-md-3">
-            <label class="form-label fw-bold text-dark">Prix max (€)</label>
+            <label class="form-label fw-bold text-dark">Prix max (DT)</label>
             <input type="number" class="form-control" [(ngModel)]="filterMaxPrice" (input)="applyFilters()"
                    placeholder="Ex: 5000">
           </div>
@@ -75,7 +75,7 @@
                 <td>{{ i + 1 }}</td>
                 <td><strong>{{ solution.name }}</strong></td>
                 <td>{{ solution.description || '—' }}</td>
-                <td><span class="badge bg-success fs-6">{{ solution.prix | currency:'EUR' }}</span></td>
+                <td><span class="badge bg-success fs-6">{{ solution.prix | currency:'DT ' }}</span></td>
 
                 <!-- BADGE CATÉGORIE AVEC COULEUR UNIQUE -->
                 <td>
@@ -155,7 +155,7 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Price (€)</label>
+            <label class="form-label">Price (DT)</label>
             <input [(ngModel)]="newSolution.prix" name="prix" type="number" min="0.01" step="0.01" class="form-control" required>
           </div>
           <!-- CATEGORIE -->
@@ -227,7 +227,7 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Price (€)</label>
+            <label class="form-label">Price (DT)</label>
             <input [(ngModel)]="newSolution.prix" name="prix" type="number" min="0.01" step="0.01" class="form-control">
           </div>
           <!-- CATEGORIE -->
