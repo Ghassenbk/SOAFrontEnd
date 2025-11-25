@@ -123,7 +123,7 @@
           <!-- Si aucune solution -->
           <div *ngIf="filteredSolutions.length === 0" class="text-center py-5 text-muted">
             <i class="bi bi-inbox display-1"></i>
-            <p class="mt-3">Aucune solution trouvée avec ces filtres.</p>
+            <p class="mt-3">Aucun produit trouvé avec ces filtres.</p>
           </div>
         </div>
       </div>
@@ -137,7 +137,7 @@
     <form (ngSubmit)="addSolution()" #addForm="ngForm">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Add New Solution</h5>
+          <h5 class="modal-title">Add New product</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
@@ -197,7 +197,7 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-dark">Add Solution</button>
+          <button type="submit" class="btn btn-dark">Add Product</button>
         </div>
       </div>
     </form>
@@ -210,7 +210,7 @@
     <form (ngSubmit)="updateSolution()" #editForm="ngForm">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Edit Solution</h5>
+          <h5 class="modal-title">Edit product</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
@@ -272,7 +272,7 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-dark">Update Solution</button>
+          <button type="submit" class="btn btn-dark">Update product</button>
         </div>
       </div>
     </form>
